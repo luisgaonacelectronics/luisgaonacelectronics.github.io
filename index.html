@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="imagenes/chip.png">
+    <title>Dr. Luis Fernando Gaona | I+D & Educación Tecnológica</title>
+    <style>
+        /* ========================
+           Variables y Reseteo
+           ======================== */
+        :root {
+            --primary-color: #1a202c;
+            --secondary-color: #2d3748;
+            --accent-color: #00979c;
+            --accent-hover: #007a7e;
+            --bg-light: #f7fafc;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --white: #ffffff;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        a { text-decoration: none; color: var(--accent-color); }
+
+        /* Navegación y Hero omitidos por brevedad visual, se mantienen igual */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-logo { color: var(--white); font-weight: bold; font-size: 1.3rem; }
+        .nav-logo span { color: var(--accent-color); }
+        .nav-links a { color: var(--white); margin-left: 2rem; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-color); }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 8rem 5% 6rem;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero h2 { font-size: 1.5rem; color: var(--accent-color); font-weight: 400; margin-bottom: 2rem; }
+        .hero p { max-width: 1100px; margin: 0 auto 2.5rem auto; color: #cbd5e0; font-size: 1.1rem; }
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--white); padding: 0.8rem 2rem; border-radius: 6px; font-weight: bold; transition: background 0.3s, transform 0.2s; }
+        .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--accent-color); margin-left: 1rem; }
+
+        section { padding: 6rem 5%; }
+        .section-light { background-color: var(--white); }
+        .section-dark { background-color: var(--bg-light); }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-title { font-size: 2.5rem; color: var(--primary-color); }
+        .section-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 4px; background-color: var(--accent-color); margin: 15px auto 0 auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: 0 auto; }
+
+        /* Estilo para las tarjetas interactivas */
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer; /* Cambia el cursor para indicar que es un botón */
+        }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent-color);
+        }
+        .card-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
+        .card h3 { color: var(--primary-color); font-size: 1.3rem; margin-bottom: 1rem; line-height: 1.3; }
+        .card p { color: var(--text-muted); margin-bottom: 1.5rem; flex-grow: 1; font-size: 0.95rem; }
+        .tags { margin-bottom: 1.5rem; }
+        .tag { display: inline-block; background: #edf2f7; color: var(--primary-color); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 500; margin: 0 5px 5px 0; }
+        .udemy-badge { background-color: #a435f0; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; display: inline-block; margin-bottom: 1rem; }
+        .clic-hint { font-size: 0.85rem; color: var(--accent-color); font-weight: bold; margin-top: auto; }
+
+        footer { background-color: var(--primary-color); color: #a0aec0; text-align: center; padding: 3rem 5%; }
+
+        /* ========================
+           Ventana Modal (Pop-up)
+           ======================== */
+        .modal-overlay {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(26, 32, 44, 0.8); /* Fondo oscuro semitransparente */
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        .modal-content {
+            background-color: var(--white);
+            width: 95%;
+            max-width: 1100px;
+            max-height: 90vh;
+            border-radius: 8px;
+            padding: 4rem;
+            position: relative;
+            overflow-y: auto; /* Permite hacer scroll si el contenido es largo */
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(-20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-img {
+            width: 80%;
+            max-width: 600px; /* Limita el ancho de la imagen */
+            height: auto;
+            border-radius: 8px;
+            margin: 1.5rem auto; /* La centra vertical y horizontalmente */
+            display: block;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .close-btn:hover { color: #e53e3e; }
+        #modal-body h4 { color: var(--accent-color); margin-top: 1.5rem; margin-bottom: 0.5rem; }
+        #modal-body p { margin-bottom: 1rem; color: var(--text-main); line-height: 1.7; }
+        #modal-body ul { margin-left: 20px; margin-bottom: 1rem; color: var(--text-main); }
+        #modal-body li { margin-bottom: 0.5rem; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .btn-outline { margin-left: 0; margin-top: 1rem; display: block; }
+            .modal-content { padding: 1.5rem; width: 95%; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">Dr. Luis Gaona <span>| I+D</span></div>
+        <div class="nav-links">
+            <a href="#proyectos" data-i18n="nav_proyectos">Laboratorio de Desarrollo</a>
+            <a href="#udemy" data-i18n="nav_udemy">Formación Online</a>
+            <a href="#clases" data-i18n="nav_clases">Programas Presenciales</a>
+            <a href="#conocimiento" data-i18n="nav_conocimiento">Generación de Conocimiento</a>
+            <a href="#contacto" data-i18n="nav_contacto">Contacto</a>
+            <button id="lang-toggle" onclick="toggleLanguage()" style="background:var(--accent-color); color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; margin-left:20px; font-weight:bold;">EN</button>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Dr. Luis Fernando Gaona</h1>
+        <h2 data-i18n="hero_subtitle">PhD en Electrónica de Potencia & IA | Creador de Contenido Educativo</h2>
+        <p data-i18n="hero_desc">Ingeniero en Electrónica con Maestría y Doctorado en Electrónica de Potencia. Especialista en el diseño, simulación y 
+                control avanzado de convertidores de energía (CD-CD, CA-CD) para los sectores automotriz, industrial y de energías renovables. 
+                Experto en diseño de PCBs de potencia, selección de componentes y validación de hardware en laboratorio. Amplia experiencia en 
+                el ciclo de diseño basado en modelos (Model-Based Design) utilizando MATLAB/Simulink y LTSpice, con capacidad probada para 
+                trasladar modelos de simulación a implementaciones en tiempo real sobre plataformas embebidas como DSPs, microcontroladores y FPGAs. 
+                Dominio de técnicas de control clásico y avanzado, incluyendo PID, control adaptativo y controladores basados en IA, enfocado 
+                en la innovación, eficiencia y confiabilidad de sistemas electrónicos.</p>
+        <div>
+            <a href="#contacto" class="btn" data-i18n="hero_btn1">Agendar Clase Institucional</a>
+            <a href="#udemy" class="btn btn-outline" data-i18n="hero_btn2">Ver Cursos en Udemy</a>
+        </div>
+    </header>
+
+<section id="proyectos" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="proyectos_title">Laboratorio de Desarrollo (I+D)</h2>
+        </div>
+        <div class="grid">
+            
+            <div class="card" onclick="abrirModal('corevolt')">
+                <div class="card-icon">⚡</div>
+                <h3>CoreVolt</h3> <p data-i18n="corevolt_card_desc">Desarrollo de software propietario para la selección automatizada de componentes en convertidores DC-DC y AC-DC...</p>
+                <div class="tags"><span class="tag">Python</span><span class="tag">ML</span></div>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+            <div class="card" onclick="abrirModal('control_strategies')">
+                <div class="card-icon">🎛️</div>
+                <h3 data-i18n="control_card_title">Estrategias de Control para Convertidor Buck</h3>
+                <p data-i18n="control_card_desc">Análisis comparativo de estrategias PID vs algoritmos de Inteligencia Artificial vs FCS-MPC.</p>
+                <div class="tags"><span class="tag">FCS-MPC</span><span class="tag">PID</span><span class="tag" data-i18n="tag_ia">IA</span></div>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+            <div class="card" onclick="abrirModal('buck_simulink')">
+                <div class="card-icon">💻</div>
+                <h3 data-i18n="buck_card_title">Modelado y Verificación de Convertidor Buck</h3>
+                <p data-i18n="buck_card_desc">Modelado matemático exhaustivo de convertidores reductores y su verificación en MATLAB/Simulink.</p>
+                <div class="tags"><span class="tag">Simulink</span><span class="tag" data-i18n="tag_modeling">Modeling</span></div>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+            <div class="card" onclick="abrirModal('cinematica_inversa')">
+                <div class="card-icon">📐</div>
+                <h3 data-i18n="cinematica_card_title">Control por Cinemática Inversa de un Brazo Robótico 6-DOF</h3>
+                <p data-i18n="cinematica_card_desc">Algoritmos de cinemática inversa para planeación de trayectorias en manipuladores espaciales.</p>
+                <div class="tags"><span class="tag">Robotics</span><span class="tag">Kinematics</span></div>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+            <div class="card" onclick="abrirModal('real_time_arm')">
+                <div class="card-icon">🤖</div>
+                <h3 data-i18n="realtime_card_title">Control en Tiempo Real de un Brazo Robótico 6-DOF</h3>
+                <p data-i18n="realtime_card_desc">Implementación de sistemas en tiempo real para aplicaciones de gemelos digitales interactivos.</p>
+                <div class="tags"><span class="tag">Real-Time</span><span class="tag">Digital Twin</span></div>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+            <div class="card" onclick="abrirModal('osciloscopio')">
+                <div class="card-icon">📡</div>
+                <h3 data-i18n="osciloscopio_card_title">Osciloscopio Inalámbrico de Bajo Costo</h3>
+                <p data-i18n="osciloscopio_card_desc">Construcción de un osciloscopio inalámbrico accesible para diagnóstico electrónico.</p>
+                <div class="tags"><span class="tag">Hardware</span><span class="tag">IoT</span></div>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="udemy" class="section-dark">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="udemy_title">Formación Online (Udemy)</h2>
+            <p class="section-subtitle" data-i18n="udemy_subtitle">Aprende a tu propio ritmo con proyectos aplicados a la industria.</p>
+        </div>
+        <div class="grid">
+            <div class="card" style="border-top: 4px solid #a435f0;">
+                <div><span class="udemy-badge" data-i18n="udemy_badge">Nuevo Curso en Udemy</span></div>
+                <h3 data-i18n="udemy_course_title">Python para Automatización de Reportes Industriales</h3>
+                <p data-i18n="udemy_course_desc">"Como ingenieros, se nos entrena rigurosamente para diseñar, calcular y resolver problemas matemáticos complejos. Sin embargo, pasamos una cantidad desproporcionada de nuestro tiempo laboral copiando y pegando gráficas de Excel a Word..."<br><br>En este curso abordaremos cómo la integración de herramientas como Python y la librería Pandas pueden transformar horas de trabajo administrativo en un script de 3 segundos, permitiéndote concentrarte en lo que realmente importa: la ingeniería.</p>
+                <div class="tags"><span class="tag">Pandas</span><span class="tag">Docxtpl</span><span class="tag">Weasyprint</span></div>
+                <a href="https://www.udemy.com/course/automatizacion-de-reportes-con-python-excel-word-y-pdf/?referralCode=5D35005E0E889F4E05A6" style="font-weight: bold; color: #a435f0;" data-i18n="udemy_link">> Ir al curso en Udemy</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="clases" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="clases_title">Cursos y Programas Presenciales</h2>
+        </div>
+        <div class="grid">
+            <div class="card" onclick="abrirModal('ia_aplicada')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
+                <div class="card-icon">🧠</div>
+                <h3 data-i18n="clases_ia_title">Inteligencia Artificial Aplicada</h3>
+                <p data-i18n="clases_ia_desc">Programa inmersivo donde los alumnos aprenden a adquirir datos, entrenar modelos de IA y desplegarlos en microcontroladores.</p>
+            </div>
+            
+            <div class="card" onclick="abrirModal('consultor')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
+                <div class="card-icon">🏭</div>
+                <h3 data-i18n="clases_consultoria_title">Consultoría</h3>
+                <p data-i18n="clases_consultoria_desc">Servicios de consultoría en electrónica de potencia.</p>
+            </div>
+            
+            <div class="card" onclick="abrirModal('diferencial')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
+                <div class="card-icon">📐</div>
+                <h3 data-i18n="clases_calculo_title">Cálculo Diferencial</h3>
+                <p data-i18n="clases_calculo_desc">Programa inmersivo de cálculo donde los alumnos aprenden las aplicaciones del cálculo diferencial en casos reales y prácticos, como videojuegos, analítica de datos, redes sociales e Inteligencia Artificial.</p>
+            </div>
+            
+            <div class="card" onclick="abrirModal('potencia')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
+                <div class="card-icon">🔋</div>
+                <h3 data-i18n="clases_potencia_title">Convertidores DC-DC</h3>
+                <p data-i18n="clases_potencia_desc">Programa de electrónica de potencia donde el estudiante aprenderá a cómo analizar convertidores electrónicos CD-CD, obtendrá los modelos matemáticos y controlará el convertidor con técnicas de control clásicas como PID y avanzadas como IA y FCS-MPC.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="conocimiento" class="section-dark">
+    <div class="section-header">
+        <h2 class="section-title" data-i18n="conocimiento_title">Generación de Conocimiento</h2>
+        <p class="section-subtitle" data-i18n="conocimiento_subtitle">Publicaciones, manuales y recursos bibliográficos.</p>
+    </div>
+    <div class="grid">
+        <div class="card" onclick="abrirModal('libro')" style="border-top: 4px solid var(--accent-color);">
+            <div class="card-icon">📚</div>
+            <h3 data-i18n="libro_title">Libro Técnico: Diseño de Convertidores</h3>
+            <p data-i18n="libro_desc">Material bibliográfico complementario enfocado en metodologías de productividad para ingenieros, usando automatización de código libre.</p>
+            <div class="tags">
+                <span class="tag" data-i18n="tag_autor">Autor</span>
+                <span class="tag" data-i18n="tag_productividad">Productividad</span>
+            </div>
+            <div class="clic-hint" data-i18n="hint_leer">> Leer fragmento</div>
+        </div>
+
+        <div class="card" style="border-top: 4px solid #a435f0;">
+            <div class="card-icon">🔬</div>
+            <h3 data-i18n="articulos_title">Artículos Científicos</h3>
+            <p data-i18n="articulos_desc">Artículos científicos publicados en revistas internacionales y congresos nacionales e internacionales.</p>
+            <div class="tags"><span class="tag" data-i18n="tag_productividad">Productividad</span></div>
+            <a href="https://scholar.google.com/citations?user=jT8KK-kAAAAJ&hl=es" style="font-weight: bold; color: #a435f0;" data-i18n="link_publicaciones">> Publicaciones</a>
+        </div>
+    </div>
+</section>
+
+    <section id="contacto" class="section-light" style="text-align: center; border-top: 1px solid #e2e8f0;">
+        <div class="section-header" style="margin-bottom: 2rem;">
+            <h2 class="section-title" style="font-size: 2.2rem;" data-i18n="contacto_title">¿Listo para integrar nueva tecnología?</h2>
+        </div>
+        <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem auto; line-height: 1.8;" data-i18n="contacto_desc">
+            Si quieres saber más acerca de los cursos, como temario detallado y costos de implementación para tu escuela o empresa, contáctame para agendar una reunión técnica.
+        </p>
+        <a href="mailto:luisgaonac4@gmail.com" class="btn" style="font-size: 1.1rem; padding: 1rem 2.5rem;" data-i18n="contacto_btn">Contactar por Correo</a>
+    </section>
+
+    <footer>
+        <p data-i18n="footer_text">&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente.</p>
+    </footer>
+
+    <!-- ==============================================
+         ESTRUCTURA DE LA VENTANA MODAL (Oculta)
+         ============================================== -->
+    <div class="modal-overlay" id="miModal" onclick="cerrarModalFondo(event)">
+        <div class="modal-content">
+            <span class="close-btn" onclick="cerrarModal()">&times;</span>
+            <h2 id="modal-titulo" style="color: var(--primary-color); font-size: 2rem; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 20px;"></h2>
+            <div id="modal-cuerpo">
+                <!-- Aquí se inyecta el contenido dinámicamente con JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ==============================================
+         LÓGICA JAVASCRIPT PARA LAS MODALES
+         ============================================== -->
+    <script>
+        // Base de datos local con la información específica de cada proyecto
+const datosProyectos = {
+            'corevolt': {
+            es: {
+                titulo: 'CoreVolt: IA para Convertidores',
+                contenido: `
+                    <img src="imagenes/corevolt.png" class="modal-img">
+                    
+                    <h4>Descripción Técnica</h4>
+                    <p>CoreVolt es una plataforma de software especializada desarrollada para facilitar el diseño analítico, 
+                        la validación preliminar y la comprensión didáctica de los convertidores de potencia CD-CD, centrándose 
+                        inicialmente en la topología Buck que funciona en modo de conducción continua (CCM). El software está pensado 
+                        para actuar como una capa intermedia entre el diseño analítico propio de los libros de texto y los entornos de 
+                        simulación de circuitos a escala real, lo que permite una rápida iteración del diseño al tiempo que se mantiene 
+                        una comprensión física del funcionamiento del convertidor. A diferencia de las herramientas de simulación de uso general, 
+                        CoreVolt se centra en proporcionar un flujo de trabajo de diseño guiado y transparente. Todos los cálculos internos 
+                        se basan en principios bien establecidos de la electrónica de potencia, lo que permite a los usuarios asociar 
+                        claramente las especificaciones eléctricas con los valores resultantes de los componentes, las magnitudes de ondulación y 
+                        los límites de funcionamiento. Este enfoque hace que la herramienta sea especialmente adecuada para las primeras fases 
+                        del diseño, la enseñanza académica y la validación previa al desarrollo del hardware.</p>
+                    
+                    <h4>Tecnologías Involucradas</h4>
+                    <ul>
+                        <li>Desarrollo de modelos subrogados para predecir pérdidas de potencia.</li>
+                        <li>Integración de topologías Buck, Boost, DAB y Cuk.</li>
+                        <li>Optimización multi-objetivo (Eficiencia vs Volumen físico).</li>
+                    </ul>
+                <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://github.com/luisgaonacelectronics/corevolt" target="_blank" class="btn" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                            Ver en GitHub
+                        </a>
+                    </div>
+                `
+            },
+            en: {
+                titulo: 'CoreVolt: AI for Converters',
+                contenido: `
+                    <img src="imagenes/corevolt.png" class="modal-img">
+                    
+                    <h4>Technical Description</h4>
+                    <p>CoreVolt is a specialized software platform developed to facilitate the analytical design, 
+                        preliminary validation, and didactic understanding of DC-DC power converters, initially focusing 
+                        on the Buck topology operating in continuous conduction mode (CCM). The software is designed to 
+                        act as an intermediate layer between textbook analytical design and full-scale circuit simulation 
+                        environments, allowing for rapid design iteration while maintaining a physical understanding of 
+                        the converter's operation. Unlike general-purpose simulation tools, CoreVolt focuses on providing 
+                        a guided and transparent design workflow. All internal calculations are based on well-established 
+                        power electronics principles, enabling users to clearly associate electrical specifications with 
+                        resulting component values, ripple magnitudes, and operating limits. This approach makes the tool 
+                        particularly suitable for early design phases, academic teaching, and pre-hardware development validation.</p>
+                    
+                    <h4>Technologies Involved</h4>
+                    <ul>
+                        <li>Development of surrogate models to predict power losses.</li>
+                        <li>Integration of Buck, Boost, DAB, and Cuk topologies.</li>
+                        <li>Multi-objective optimization (Efficiency vs. Physical Volume).</li>
+                    </ul>
+                <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://github.com/luisgaonacelectronics/corevolt" target="_blank" class="btn" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                            Ver en GitHub
+                        </a>
+                    </div>
+                `
+            }
+        },
+            'control_strategies': {
+            es: {
+                titulo: 'Buck Converter Control Strategies',
+                contenido: `
+                    <img src="imagenes/comparacion.png" class="modal-img">
+                    <h4>Descripción Técnica</h4>
+                    <p>El convertidor Buck CD-CD es el convertidor fundamental en la electrónica de potencia. Este convertidor muestra una naturaleza 
+                        donde el diseño de control y verificación es un objetivo critico. Este proyecto representa una validación comparativa directa 
+                        entre métodos de control tradicionales y modernos en convertidores CD-CD.</p>
+                    <h4>Análisis Implementado</h4>
+                    <ul>
+                        <li><strong>PID Clásico:</strong> Sintonización empírica y por respuesta de frecuencia.</li>
+                        <li><strong>AI Control:</strong> Uso de redes neuronales para adaptar la señal de control bajo perturbaciones de carga.</li>
+                        <li><strong>FCS-MPC:</strong> (Finite Control Set Model Predictive Control) Implementación predictiva calculando la función de costo en tiempo discreto.</li>
+                    </ul>
+                <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://github.com/luisgaonacelectronics/Buck_Converter_Control_Strategies_PID_vs_AI_vs_FCS-MPC" target="_blank" class="btn" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                            Ver en GitHub
+                        </a>
+                    </div>
+                `
+            },
+            en: {
+                titulo: 'Buck Converter Control Strategies',
+                contenido: `
+                    <img src="imagenes/comparacion.png" class="modal-img">
+                    <h4>Technical Description</h4>
+                    <p>The DC-DC Buck converter is the fundamental converter in power electronics. This converter exhibits a nature 
+                        where control design and verification is a critical objective. This project represents a direct comparative validation 
+                        between traditional and modern control methods in DC-DC converters.</p>
+                    <h4>Implemented Analysis</h4>
+                    <ul>
+                        <li><strong>Classic PID:</strong> Empirical and frequency response tuning.</li>
+                        <li><strong>AI Control:</strong> Use of neural networks to adapt the control signal under load disturbances.</li>
+                        <li><strong>FCS-MPC:</strong> (Finite Control Set Model Predictive Control) Predictive implementation by calculating the cost function in discrete time.</li>
+                    </ul>
+                <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://github.com/luisgaonacelectronics/Buck_Converter_Control_Strategies_PID_vs_AI_vs_FCS-MPC" target="_blank" class="btn" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                            Ver en GitHub
+                        </a>
+                    </div>
+                `
+            }
+        },
+            'buck_simulink': {
+            es: {
+                titulo: 'Buck Converter Modeling and Verification',
+                contenido: `
+                    <img src="imagenes/senales.png" class="modal-img">
+                    <h4>Descripción Técnica</h4>
+                    <p>Este Live Proyecto documenta mediante un Live Script el modelado, la simulación y la verificación de un convertidor Buck CD-CD utilizando 
+                        distintos niveles de fidelidad de modelado en Simulink. El objetivo principal es establecer un flujo de trabajo 
+                        de modelado validado, adecuado tanto para el análisis detallado en el dominio del tiempo como para el diseño orientado 
+                        al control.</p>
+                    <h4>Flujo de Trabajo</h4>
+                    <ul>
+                        <li>Obtención matemática de las funciones de transferencia (Duty-to-Output y Vin-to-Output).</li>
+                        <li>Construcción del modelo físico con Simscape Electrical.</li>
+                        <li>Verificación y cruce de datos entre el modelo matemático puro y el modelo físico en Simulink.</li>
+                    </ul>
+                <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://github.com/luisgaonacelectronics/Buck-Converter-Modeling-and-Verification-in-Simulink" target="_blank" class="btn" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                            Ver en GitHub
+                        </a>
+                    </div>
+                `
+            },
+            en: {
+                titulo: 'Buck Converter Modeling and Verification',
+                contenido: `
+                    <img src="imagenes/senales.png" class="modal-img">
+                    <h4>Technical Description</h4>
+                    <p>This Live Project documents through a Live Script the modeling, simulation, and verification of a DC-DC Buck converter using 
+                        different levels of modeling fidelity in Simulink. The main objective is to establish a validated modeling workflow, 
+                        suitable for both detailed time-domain analysis and control-oriented design.</p>
+                    <h4>Workflow</h4>
+                    <ul>
+                        <li>Mathematical derivation of transfer functions (Duty-to-Output and Vin-to-Output).</li>
+                        <li>Construction of the physical model using Simscape Electrical.</li>
+                        <li>Verification and cross-referencing of data between the pure mathematical model and the physical model in Simulink.</li>
+                    </ul>
+                <div style="text-align: center; margin-top: 2rem;">
+                        <a href="https://github.com/luisgaonacelectronics/Buck-Converter-Modeling-and-Verification-in-Simulink" target="_blank" class="btn" style="display: inline-flex; align-items: center; gap: 8px;">
+                            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                            </svg>
+                            Ver en GitHub
+                        </a>
+                    </div>
+                `
+            }
+        },
+            'cinematica_inversa': {
+            es: {
+                titulo: 'Cinemática Inversa de un Brazo Robótico',
+                contenido: `
+                    <img src="imagenes/robot.png" class="modal-img">
+                    <h4>Descripción Técnica</h4>
+                    <p>Este proyecto describe el diseño y la implementación de un sistema de control en tiempo real para un brazo robótico 
+                        de dos grados de libertad (2-DOF), centrado en la aplicación de la cinemática inversa (IK). El sistema utiliza MATLAB 
+                        como motor computacional para resolver las ecuaciones geométricas necesarias para convertir las coordenadas cartesianas 
+                        de un objeto externo en ángulos específicos de las articulaciones. Para la validación y el análisis dinámico, el 
+                        movimiento se visualiza mediante Simscape, que proporciona un entorno de simulación multicuerpo de alta fidelidad. 
+                        Los resultados muestran una interfaz de control intuitiva en la que el efector final sigue con precisión la posición 
+                        de un objeto objetivo, lo que establece un marco fundamental para la expansión cinemática de múltiples grados de 
+                        libertad y la interacción robótica en tiempo real.</p>
+                    <h4>Tecnologías Involucradas</h4>
+                    <ul>
+                        <li>Uso de Arduino.</li>
+                        <li>Resolución analítica y por métodos numéricos (Jacobiano inverso).</li>
+                        <li>Implementación en MATLAB, UNITY y Teoría de control.</li>
+                    </ul>
+                `
+            },
+            en: {
+                titulo: 'Inverse Kinematics of a Robotic Arm',
+                contenido: `
+                    <img src="imagenes/robot.png" class="modal-img">
+                    <h4>Technical Description</h4>
+                    <p>This project describes the design and implementation of a real-time control system for a two-degree-of-freedom (2-DOF) robotic arm, 
+                        focusing on the application of inverse kinematics (IK). The system uses MATLAB as a computational engine to solve the geometric 
+                        equations necessary to convert the Cartesian coordinates of an external object into specific joint angles. For validation and 
+                        dynamic analysis, the movement is visualized using Simscape, which provides a high-fidelity multibody simulation environment. 
+                        The results show an intuitive control interface where the end-effector accurately tracks the position of a target object, 
+                        establishing a fundamental framework for kinematic expansion to multiple degrees of freedom and real-time robotic interaction.</p>
+                    <h4>Technologies Involved</h4>
+                    <ul>
+                        <li>Use of Arduino.</li>
+                        <li>Analytical and numerical resolution (Inverse Jacobian).</li>
+                        <li>Implementation in MATLAB, UNITY, and Control Theory.</li>
+                    </ul>
+                `
+            }
+        },
+            'real_time_arm': {
+            es: {
+                titulo: 'Control en Tiempo Real para Gemelos Digitales',
+                contenido: `
+                    <img src="imagenes/robot2.png" class="modal-img">
+                    <h4>Descripción Técnica</h4>
+                    <p>Este proyecto describe el desarrollo de un sistema de control en tiempo real de tipo «hardware-in-the-loop» (HIL) 
+                        para un brazo robótico de seis grados de libertad (6-DOF). El sistema utiliza una interfaz basada en Arduino como 
+                        puente de control principal, en la que seis potenciómetros proporcionan una entrada física y manual para definir 
+                        los ángulos de cada articulación. Al asignar señales analógicas a valores de rotación digitales, la arquitectura 
+                        permite una manipulación directa e intuitiva de un modelo 3D virtual simulado en el entorno Unity. Los resultados 
+                        demuestran una interacción de baja latencia entre el hardware analógico y el gemelo digital, lo que establece una 
+                        plataforma robusta para probar estrategias de teleoperación manual y de control del espacio articular en sistemas 
+                        robóticos.</p>
+                    <h4>Flujo de Trabajo</h4>
+                    <ul>
+                        <li>Comunicación serial bidireccional de baja latencia.</li>
+                        <li>Sincronización de variables de estado entre el microcontrolador (Arduino) y Unity3D.</li>
+                    </ul>
+                `
+            },
+            en: {
+                titulo: 'Real-time Control for Digital Twins',
+                contenido: `
+                    <img src="imagenes/robot2.png" class="modal-img">
+                    <h4>Technical Description</h4>
+                    <p>This project describes the development of a real-time hardware-in-the-loop (HIL) control system 
+                        for a six-degree-of-freedom (6-DOF) robotic arm. The system uses an Arduino-based interface as 
+                        the main control bridge, where six potentiometers provide a physical, manual input to define 
+                        the angles of each joint. By mapping analog signals to digital rotation values, the architecture 
+                        allows for direct and intuitive manipulation of a virtual 3D model simulated in the Unity environment. 
+                        The results demonstrate low-latency interaction between the analog hardware and the digital twin, 
+                        establishing a robust platform for testing manual teleoperation and joint space control strategies in 
+                        robotic systems.</p>
+                    <h4>Workflow</h4>
+                    <ul>
+                        <li>Low-latency bidirectional serial communication.</li>
+                        <li>Synchronization of state variables between the microcontroller (Arduino) and Unity3D.</li>
+                    </ul>
+                `
+            }
+        },
+            'osciloscopio': {
+            es: {
+                titulo: 'Osciloscopio Inalámbrico de Bajo Costo',
+                contenido: `
+                    <img src="imagenes/iot.png" class="modal-img">
+                    <h4>Descripción Técnica</h4>
+                    <p>Este documento detalla el diseño y la implementación de un osciloscopio inalámbrico portátil y de bajo coste 
+                        que utiliza el microcontrolador ESP8266. Los osciloscopios tradicionales, aunque son esenciales para el diagnóstico 
+                        electrónico, suelen caracterizarse por su elevado coste y su falta de portabilidad. El sistema propuesto supera 
+                        estas barreras utilizando el convertidor analógico-digital (ADC) de 10 bits integrado en el ESP8266 para muestrear 
+                        señales procedentes de un generador de funciones externo. Los datos se transmiten a través de un protocolo WebSocket 
+                        de alta velocidad a una interfaz web, lo que permite la visualización en tiempo real en cualquier dispositivo móvil u 
+                        ordenador dentro de la red. Los resultados demuestran que se ha conseguido un prototipo funcional capaz de monitorizar 
+                        señales de alta frecuencia, lo que proporciona una herramienta versátil para fines educativos y pruebas sobre el 
+                        terreno en las que no se dispone de instrumentación.</p>
+                    <h4>Especificaciones</h4>
+                    <ul>
+                        <li>Acondicionamiento de señal analógica mediante amplificadores operacionales.</li>
+                        <li>Procesamiento en el borde (Edge) usando arquitecturas tipo ESP32.</li>
+                        <li>Interfaz gráfica desarrollada en HTML para la visualización de la forma de onda.</li>
+                    </ul>
+                `
+            },
+            en: {
+                titulo: 'Low-cost Wireless Oscilloscope',
+                contenido: `
+                    <img src="imagenes/iot.png" class="modal-img">
+                    <h4>Technical Description</h4>
+                    <p>This document details the design and implementation of a portable, low-cost wireless oscilloscope 
+                        using the ESP8266 microcontroller. Traditional oscilloscopes, while essential for electronic diagnostics, 
+                        are often characterized by their high cost and lack of portability. The proposed system overcomes 
+                        these barriers by utilizing the 10-bit analog-to-digital converter (ADC) integrated into the ESP8266 to sample 
+                        signals from an external function generator. Data is transmitted via a high-speed WebSocket 
+                        protocol to a web interface, allowing real-time visualization on any mobile device or 
+                        computer within the network. The results demonstrate that a functional prototype capable of monitoring 
+                        high-frequency signals has been achieved, providing a versatile tool for educational purposes and field 
+                        testing where traditional instrumentation is unavailable.</p>
+                    <h4>Specifications</h4>
+                    <ul>
+                        <li>Analog signal conditioning using operational amplifiers.</li>
+                        <li>Edge processing using ESP32-type architectures.</li>
+                        <li>Graphical interface developed in HTML for waveform visualization.</li>
+                    </ul>
+                `
+            }
+        },
+            'libro': {
+            es: {
+                titulo: 'Fragmento: Electrónica de potencia: Modelado, Control Predictivo e IA en convertidores CD-CD',
+                contenido: `
+                    <h4>Prólogo: El paradigma de los libros tradicionales de electrónica de potencia</h4>
+                    <p>Aunque la literatura clásica sobre el diseño de convertidores de potencia es excepcional para comprender las bases 
+                        matemáticas y topológicas, a menudo se detiene justo donde comienzan los verdaderos desafíos contemporáneos. 
+                        Los textos tradicionales carecen de una exploración detallada sobre las distintas estrategias de control moderno y 
+                        omiten por completo las herramientas que hoy redefinen la industria, como el uso de la Inteligencia Artificial. 
+                        Este libro nace para cubrir ese vacío y tender un puente entre la teoría rigurosa y la vanguardia tecnológica. 
+                        A través de ejemplos actuales y aplicados, no solo abordaremos el diseño físico, sino que demostraremos cómo integrar 
+                        algoritmos de IA y control avanzado para optimizar la electrónica de potencia del presente.</p>
+                    <h4>Índice Resumido</h4>
+                    <ul>
+                        <li>Cap 1: Fundamentos Metodológicos de modelado y control.</li>
+                        <li>Cap 2: Estrategias de control lineal y Analítico.</li>
+                        <li>Cap 3: Control Predictivo basado en modelos.</li>
+                        <li>Cap 4: Control Avanzado Basado en Inteligencia Artificial.</li>
+                        <li>Capítulos de convertidores (con análisis y estado estable integrados).</li>
+                    </ul>
+                `
+            },
+            en: {
+                titulo: 'Excerpt: Power Electronics: Modeling, Predictive Control, and AI in DC-DC Converters',
+                contenido: `
+                    <h4>Prologue: The Paradigm of Traditional Power Electronics Books</h4>
+                    <p>Although classic literature on power converter design is exceptional for understanding mathematical 
+                        and topological foundations, it often stops right where true contemporary challenges begin. 
+                        Traditional texts lack a detailed exploration of different modern control strategies and 
+                        completely omit the tools that are redefining the industry today, such as the use of Artificial Intelligence. 
+                        This book was created to fill that gap and build a bridge between rigorous theory and the technological vanguard. 
+                        Through current and applied examples, we will not only address physical design but also demonstrate how to integrate 
+                        AI algorithms and advanced control to optimize today's power electronics.</p>
+                    <h4>Summary Index</h4>
+                    <ul>
+                        <li>Ch 1: Methodological Foundations of Modeling and Control.</li>
+                        <li>Ch 2: Linear and Analytical Control Strategies.</li>
+                        <li>Ch 3: Model Predictive Control (MPC).</li>
+                        <li>Ch 4: Advanced Control Based on Artificial Intelligence.</li>
+                        <li>Converter Chapters (with integrated analysis and steady-state values).</li>
+                    </ul>
+                `
+            }
+        },
+            'ia_aplicada': {
+            es: {
+                titulo: 'IA aplicada a microcontroladores',
+                contenido: `
+                    <img src="imagenes/ia_aplicada.png" class="modal-img">
+                    
+                    <h4>Descripción</h4>
+                    <p>Este curso introduce a los estudiantes al ecosistema del Machine Learning embebido (TinyML)
+                        aplicado a la Industria 4.0. A diferencia de la Inteligencia Artificial que opera en la nube, este
+                        programa enseña a llevar algoritmos predictivos directamente a microcontroladores de bajo costo y
+                        consumo (Arduino) en el borde. Los alumnos aprenderán el ciclo de vida completo de un proyecto
+                        de IA industrial: desde la recolección de datos mediante sensores (inerciales, acústicos y visuales),
+                        la extracción de características y el entrenamiento de modelos, hasta el despliegue del código en
+                        hardware para automatizar procesos, asegurar la calidad y predecir fallos mecánicos o eléctricos en
+                        tiempo real.</p> 
+                `
+            },
+            en: {
+                titulo: 'AI Applied to Microcontrollers',
+                contenido: `
+                    <img src="imagenes/ia_aplicada.png" class="modal-img">
+                    
+                    <h4>Description</h4>
+                    <p>This course introduces students to the embedded Machine Learning (TinyML) ecosystem 
+                        applied to Industry 4.0. Unlike Artificial Intelligence that operates in the cloud, this 
+                        program teaches how to bring predictive algorithms directly to low-cost, low-power 
+                        microcontrollers (Arduino) at the edge. Students will learn the complete lifecycle of an 
+                        industrial AI project: from data collection using sensors (inertial, acoustic, and visual), 
+                        feature extraction, and model training, to deploying the code on hardware to automate processes, 
+                        ensure quality, and predict mechanical or electrical failures in real-time.</p> 
+                `
+            }
+        },
+            'diferencial': {
+            es: {
+                titulo: 'Cálculo Diferencial',
+                contenido: `
+                    <img src="imagenes/diferencial.png" class="modal-img">
+                    
+                    <h4>Descripción</h4>
+                    <p>Este curso contiene los temas básicos e importantes para introducir al estudiante en el estudio del
+                        cálculo; se estudian los conceptos de: números reales, variables, funciones y límites, con los que se
+                        podría establecer uno de los más esenciales, la derivada, concepto que permite analizar la razón
+                        de cambio entre variables. Esta noción es de trascendental importancia en las aplicaciones de la
+                        vida. El Cálculo Diferencial contribuye a que el estudiante adquiera conocimientos necesarios para
+                        asimilar las asignaturas de Cálculo Integral, Cálculo Vectorial, Ecuaciones Diferenciales, Métodos
+                        Numéricos, asignaturas de Física y Ciencias de la Ingeniería. Además, contiene los principios y bases
+                        para el modelado matemático.</p>
+                `
+            },
+            en: {
+                titulo: 'Differential Calculus',
+                contenido: `
+                    <img src="imagenes/diferencial.png" class="modal-img">
+                    
+                    <h4>Description</h4>
+                    <p>This course contains the basic and important topics to introduce the student to the study of 
+                        calculus; it covers the concepts of real numbers, variables, functions, and limits, which help 
+                        establish one of the most essential concepts: the derivative. This concept allows analyzing the rate 
+                        of change between variables and is of transcendental importance in real-life applications. 
+                        Differential Calculus helps students acquire the necessary knowledge to assimilate subjects such as 
+                        Integral Calculus, Vector Calculus, Differential Equations, Numerical Methods, Physics, and 
+                        Engineering Sciences. In addition, it contains the principles and foundations for mathematical modeling.</p>
+                `
+            }
+        },
+            'potencia': {
+            es: {
+                titulo: 'Convertidores CD-CD',
+                contenido: `
+                    <img src="imagenes/potencia.png" class="modal-img">
+                    
+                    <h4>Descripción</h4>
+                    <p>Este curso proporciona las bases teóricas y prácticas para el análisis, modelado y control de convertidores
+                        conmutados de corriente continua (DC-DC). Los estudiantes aprenderán a evaluar el comportamiento
+                        de los convertidores en estado estable y a desarrollar modelos matemáticos dinámicos
+                        (pequeña señal y espacio de estados). Asimismo, el curso hace un fuerte énfasis en la validación mediante
+                        herramientas de simulación como MATLAB/Simulink y en el diseño de estrategias de control
+                        en lazo cerrado para garantizar la estabilidad y el rendimiento adecuado ante perturbaciones.</p> 
+                `
+            },
+            en: {
+                titulo: 'DC-DC Converters',
+                contenido: `
+                    <img src="imagenes/potencia.png" class="modal-img">
+                    
+                    <h4>Description</h4>
+                    <p>This course provides the theoretical and practical foundations for the analysis, modeling, and control 
+                        of switched-mode direct current (DC-DC) converters. Students will learn to evaluate the steady-state 
+                        behavior of converters and develop dynamic mathematical models (small-signal and state-space). 
+                        Furthermore, the course places a strong emphasis on validation using simulation tools like 
+                        MATLAB/Simulink and the design of closed-loop control strategies to ensure stability and proper 
+                        performance in the presence of disturbances.</p> 
+                `
+            }
+        },
+            'consultor': {
+            es: {
+                titulo: 'Trabajos de consultoría',
+                contenido: `
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <img src="imagenes/iot_buck.png" class="modal-img" style="max-width: 50%; height: auto;">
+                        <img src="imagenes/pcb.png" class="modal-img" style="max-width: 50%; height: auto;">
+                    </div>
+                    
+                    <h4>Descripción</h4>
+                    <p>Ofrezco servicios de consultoría especializada en ingeniería electrónica, enfocados en transformar conceptos 
+                        técnicos complejos en soluciones industriales robustas. Mi experiencia abarca desde el modelado y control avanzado 
+                        para proyectos de electrónica de potencia y el diseño profesional de PCBs, hasta el desarrollo de gemelos digitales 
+                        que sincronizan simulaciones 3D con modelos matemáticos de alta precisión. Además, integro tecnologías emergentes 
+                        como sistemas IoT y aplicaciones de Inteligencia Artificial para el diagnóstico y optimización de sistemas mecatrónicos, 
+                        brindando un enfoque integral, automatizado y a la medida de los objetivos de cada proyecto.</p> 
+                `
+            },
+            en: {
+                titulo: 'Consulting Services',
+                contenido: `
+                    <div style="display: flex; gap: 15px; justify-content: center;">
+                        <img src="imagenes/iot_buck.png" class="modal-img" style="max-width: 50%; height: auto;">
+                        <img src="imagenes/pcb.png" class="modal-img" style="max-width: 50%; height: auto;">
+                    </div>
+                    
+                    <h4>Description</h4>
+                    <p>I offer specialized consulting services in electronic engineering, focused on transforming complex technical 
+                        concepts into robust industrial solutions. My experience ranges from advanced modeling and control for 
+                        power electronics projects and professional PCB design, to the development of digital twins that synchronize 
+                        3D simulations with high-precision mathematical models. Furthermore, I integrate emerging technologies 
+                        such as IoT systems and Artificial Intelligence applications for the diagnosis and optimization of mechatronic 
+                        systems, providing a comprehensive, automated approach tailored to the objectives of each project.</p> 
+                `
+            }
+        }
+};
+
+// Variable global para rastrear el idioma actual
+let currentLang = 'es';
+
+// Diccionario de traducciones generales
+const translations = {
+    es: {
+        nav_proyectos: "Laboratorio de Desarrollo",
+        nav_udemy: "Formación Online",
+        nav_clases: "Programas Presenciales",
+        nav_conocimiento: "Generación de Conocimiento",
+        nav_contacto: "Contacto",
+        hero_subtitle: "PhD en Electrónica de Potencia & IA | Creador de Contenido Educativo",
+        hero_desc: "Ingeniero en Electrónica con Maestría y Doctorado en Electrónica de Potencia. Especialista en el diseño, simulación y control avanzado de convertidores de energía (CD-CD, CA-CD) para los sectores automotriz, industrial y de energías renovables. Experto en diseño de PCBs de potencia, selección de componentes y validación de hardware en laboratorio. Amplia experiencia en el ciclo de diseño basado en modelos (Model-Based Design) utilizando MATLAB/Simulink y LTSpice, con capacidad probada para trasladar modelos de simulación a implementaciones en tiempo real sobre plataformas embebidas como DSPs, microcontroladores y FPGAs. Dominio de técnicas de control clásico y avanzado, incluyendo PID, control adaptativo y controladores basados en IA, enfocado en la innovación, eficiencia y confiabilidad de sistemas electrónicos.",
+        hero_btn1: "Agendar Clase Institucional",
+        hero_btn2: "Ver Cursos en Udemy",
+        // Agrega aquí todas las demás llaves para títulos de secciones, botones, etc.
+        // Pilar 4: Generación de Conocimiento
+        conocimiento_title: "Generación de Conocimiento",
+        conocimiento_subtitle: "Publicaciones, manuales y recursos bibliográficos.",
+        libro_title: "Libro Técnico: Diseño de Convertidores",
+        libro_desc: "Material bibliográfico complementario enfocado en metodologías de productividad para ingenieros, usando automatización de código libre.",
+        tag_autor: "Autor",
+        tag_productividad: "Productividad",
+        hint_leer: "> Leer fragmento",
+        articulos_title: "Artículos Científicos",
+        articulos_desc: "Artículos científicos publicados en revistas internacionales y congresos nacionales e internacionales.",
+        link_publicaciones: "> Publicaciones",
+
+        // PILAR 1: Proyectos Técnicos
+        proyectos_title: "Laboratorio de Desarrollo (I+D)",
+        hint_detalles: "> Ver detalles técnicos",
+        
+        corevolt_card_desc: "Desarrollo de software propietario para la selección automatizada de componentes en convertidores DC-DC y AC-DC...",
+        
+        control_card_title: "Estrategias de Control para Convertidor Buck",
+        control_card_desc: "Análisis comparativo de estrategias PID vs algoritmos de Inteligencia Artificial vs FCS-MPC.",
+        tag_ia: "IA",
+        
+        buck_card_title: "Modelado y Verificación de Convertidor Buck",
+        buck_card_desc: "Modelado matemático exhaustivo de convertidores reductores y su verificación en MATLAB/Simulink.",
+        tag_modeling: "Modelado",
+        
+        cinematica_card_title: "Control por Cinemática Inversa de un Brazo Robótico 6-DOF",
+        cinematica_card_desc: "Algoritmos de cinemática inversa para planeación de trayectorias en manipuladores espaciales.",
+        
+        realtime_card_title: "Control en Tiempo Real de un Brazo Robótico 6-DOF",
+        realtime_card_desc: "Implementación de sistemas en tiempo real para aplicaciones de gemelos digitales interactivos.",
+        
+        osciloscopio_card_title: "Osciloscopio Inalámbrico de Bajo Costo",
+        osciloscopio_card_desc: "Construcción de un osciloscopio inalámbrico accesible para diagnóstico electrónico.",
+        udemy_title: "Formación Online (Udemy)",
+        udemy_subtitle: "Aprende a tu propio ritmo con proyectos aplicados a la industria.",
+        udemy_badge: "Nuevo Curso en Udemy",
+        udemy_course_title: "Python para Automatización de Reportes Industriales",
+        udemy_course_desc: '"Como ingenieros, se nos entrena rigurosamente para diseñar, calcular y resolver problemas matemáticos complejos. Sin embargo, pasamos una cantidad desproporcionada de nuestro tiempo laboral copiando y pegando gráficas de Excel a Word..."<br><br>En este curso abordaremos cómo la integración de herramientas como Python y la librería Pandas pueden transformar horas de trabajo administrativo en un script de 3 segundos, permitiéndote concentrarte en lo que realmente importa: la ingeniería.',
+        udemy_link: "> Ir al curso en Udemy",
+        clases_title: "Cursos y Programas Presenciales",
+        clases_ia_title: "Inteligencia Artificial Aplicada",
+        clases_ia_desc: "Programa inmersivo donde los alumnos aprenden a adquirir datos, entrenar modelos de IA y desplegarlos en microcontroladores.",
+        clases_consultoria_title: "Consultoría",
+        clases_consultoria_desc: "Servicios de consultoría en electrónica de potencia.",
+        clases_calculo_title: "Cálculo Diferencial",
+        clases_calculo_desc: "Programa inmersivo de cálculo donde los alumnos aprenden las aplicaciones del cálculo diferencial en casos reales y prácticos, como videojuegos, analítica de datos, redes sociales e Inteligencia Artificial.",
+        clases_potencia_title: "Convertidores DC-DC",
+        clases_potencia_desc: "Programa de electrónica de potencia donde el estudiante aprenderá a cómo analizar convertidores electrónicos CD-CD, obtendrá los modelos matemáticos y controlará el convertidor con técnicas de control clásicas como PID y avanzadas como IA y FCS-MPC.",
+        contacto_title: "¿Listo para integrar nueva tecnología?",
+        contacto_desc: "Si quieres saber más acerca de los cursos, como temario detallado y costos de implementación para tu escuela o empresa, contáctame para agendar una reunión técnica.",
+        contacto_btn: "Contactar por Correo",
+        footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente."
+    },
+    en: {
+        nav_proyectos: "R&D Laboratory",
+        nav_udemy: "Online Training",
+        nav_clases: "On-site Programs",
+        nav_conocimiento: "Knowledge Generation",
+        nav_contacto: "Contact",
+        hero_subtitle: "PhD in Power Electronics & AI | Educational Content Creator",
+        hero_desc: "Electronics Engineer with a Master's and PhD in Power Electronics. Specialist in the design, simulation, and advanced control of power converters (DC-DC, AC-DC) for the automotive, industrial, and renewable energy sectors. Expert in power PCB design, component selection, and laboratory hardware validation. Extensive experience in the Model-Based Design cycle using MATLAB/Simulink and LTSpice, with proven ability to transfer simulation models to real-time implementations on embedded platforms such as DSPs, microcontrollers, and FPGAs. Mastery of classic and advanced control techniques, including PID, adaptive control, and AI-based controllers, focused on the innovation, efficiency, and reliability of electronic systems.",
+        hero_btn1: "Schedule Institutional Class",
+        hero_btn1: "Schedule Institutional Class",
+        hero_btn2: "View Courses on Udemy",
+        // ...
+        conocimiento_title: "Knowledge Generation",
+        conocimiento_subtitle: "Publications, manuals, and bibliographic resources.",
+        libro_title: "Technical Book: Converter Design",
+        libro_desc: "Complementary bibliographic material focused on productivity methodologies for engineers, using open-source automation.",
+        tag_autor: "Author",
+        tag_productividad: "Productivity",
+        hint_leer: "> Read excerpt",
+        articulos_title: "Scientific Articles",
+        articulos_desc: "Scientific articles published in international peer-reviewed journals and national/international conferences.",
+        link_publicaciones: "> Publications",
+
+        proyectos_title: "R&D Development Laboratory",
+        hint_detalles: "> View technical details",
+        
+        corevolt_card_desc: "Development of proprietary software for automated component selection in DC-DC and AC-DC converters...",
+        
+        control_card_title: "Buck Converter Control Strategies",
+        control_card_desc: "Comparative analysis of PID strategies vs. Artificial Intelligence algorithms vs. FCS-MPC.",
+        tag_ia: "AI",
+        
+        buck_card_title: "Buck Converter Modeling and Verification",
+        buck_card_desc: "Comprehensive mathematical modeling of step-down converters and their verification in MATLAB/Simulink.",
+        tag_modeling: "Modeling",
+        
+        cinematica_card_title: "Inverse Kinematics Control of a 6-DOF Robotic Arm",
+        cinematica_card_desc: "Inverse kinematics algorithms for trajectory planning in spatial manipulators.",
+        
+        realtime_card_title: "Real-time Control of a Robotic Arm with 6-DOF",
+        realtime_card_desc: "Implementation of real-time systems for interactive digital twin applications.",
+        
+        osciloscopio_card_title: "Low-cost Wireless Oscilloscope",
+        osciloscopio_card_desc: "Construction of an accessible wireless oscilloscope for electronic diagnostics.",
+        udemy_title: "Online Training (Udemy)",
+        udemy_subtitle: "Learn at your own pace with industry-applied projects.",
+        udemy_badge: "New Course on Udemy",
+        udemy_course_title: "Python for Industrial Report Automation",
+        udemy_course_desc: '"As engineers, we are rigorously trained to design, calculate, and solve complex mathematical problems. However, we spend a disproportionate amount of our working time copying and pasting charts from Excel to Word..."<br><br>In this course, we will cover how integrating tools like Python and the Pandas library can transform hours of administrative work into a 3-second script, allowing you to focus on what truly matters: engineering.',
+        udemy_link: "> Go to Udemy course",
+        clases_title: "On-site Courses and Programs",
+        clases_ia_title: "Applied Artificial Intelligence",
+        clases_ia_desc: "Immersive program where students learn to acquire data, train AI models, and deploy them on microcontrollers.",
+        clases_consultoria_title: "Consulting",
+        clases_consultoria_desc: "Consulting services in power electronics.",
+        clases_calculo_title: "Differential Calculus",
+        clases_calculo_desc: "Immersive calculus program where students learn the applications of differential calculus in real and practical cases, such as video games, data analytics, social networks, and Artificial Intelligence.",
+        clases_potencia_title: "DC-DC Converters",
+        clases_potencia_desc: "Power electronics program where the student will learn how to analyze DC-DC electronic converters, obtain mathematical models, and control the converter with classic control techniques such as PID and advanced ones like AI and FCS-MPC.",
+        contacto_title: "Ready to integrate new technology?",
+        contacto_desc: "If you want to know more about the courses, such as detailed syllabus and implementation costs for your school or company, contact me to schedule a technical meeting.",
+        contacto_btn: "Contact via Email",
+        footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Independent Developer and Educator."
+    
+    }
+    
+};
+
+function toggleLanguage() {
+    // Alternar idioma
+    currentLang = currentLang === 'es' ? 'en' : 'es';
+    
+    // Actualizar el texto del botón
+    document.getElementById('lang-toggle').innerText = currentLang === 'es' ? 'EN' : 'ES';
+    
+    // Actualizar el atributo lang del HTML para accesibilidad
+    document.documentElement.lang = currentLang;
+
+    // Buscar todos los elementos con el atributo data-i18n y actualizar su texto
+    const elements = document.querySelectorAll('[data-i18n]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLang][key]) {
+            el.innerHTML = translations[currentLang][key]; // Usar innerHTML por si hay etiquetas como <span>
+        }
+    });
+}
+
+        // Funciones para abrir y cerrar el modal
+        function abrirModal(idProyecto) {
+            const modal = document.getElementById('miModal');
+            const titulo = document.getElementById('modal-titulo');
+            const cuerpo = document.getElementById('modal-cuerpo');
+
+            // Cargar datos según el idioma actual
+            const datos = datosProyectos[idProyecto][currentLang];
+            
+            titulo.innerText = datos.titulo;
+            cuerpo.innerHTML = datos.contenido;
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function cerrarModal() {
+            const modal = document.getElementById('miModal');
+            modal.classList.remove('active');
+            
+            // Restaurar el scroll de la página
+            document.body.style.overflow = 'auto';
+        }
+
+        // Permitir cerrar el modal si el usuario hace clic en el área oscura del fondo
+        function cerrarModalFondo(event) {
+            if(event.target.id === 'miModal') {
+                cerrarModal();
+            }
+        }
+    </script>
+</body>
+</html>
