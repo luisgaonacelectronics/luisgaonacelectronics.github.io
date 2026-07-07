@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="imagenes/chip.png">
-    <title>Dr. Luis Fernando Gaona | I+D & Educación Tecnológica</title>
+    <title>Dr. Luis Fernando Gaona | Consultor en Electrónica de Potencia, Docente e Investigador</title>
+    <meta name="description" content="Dr. Luis Fernando Gaona: Ingeniero en Electrónica con Doctorado en Electrónica de Potencia. Consultoría técnica, clases y programas presenciales de IA, cálculo y electrónica de potencia, y proyectos de I+D.">
+    <meta property="og:title" content="Dr. Luis Fernando Gaona | Consultoría, Docencia e I+D en Electrónica de Potencia">
+    <meta property="og:description" content="Consultoría en electrónica de potencia, clases presenciales y cursos online, y desarrollo de proyectos de I+D.">
     <style>
         /* ========================
            Variables y Reseteo
@@ -60,7 +63,7 @@
         .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
         .hero h2 { font-size: 1.5rem; color: var(--accent-color); font-weight: 400; margin-bottom: 2rem; }
         .hero p { max-width: 1100px; margin: 0 auto 2.5rem auto; color: #cbd5e0; font-size: 1.1rem; }
-        .btn { display: inline-block; background-color: var(--accent-color); color: var(--white); padding: 0.8rem 2rem; border-radius: 6px; font-weight: bold; transition: background 0.3s, transform 0.2s; }
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--white); padding: 0.8rem 2rem; border-radius: 6px; font-weight: bold; transition: background 0.3s, transform 0.2s; margin: 0.4rem 0; }
         .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
         .btn-outline { background-color: transparent; border: 2px solid var(--accent-color); margin-left: 1rem; }
 
@@ -219,10 +222,11 @@
         <div class="nav-logo">Dr. Luis Gaona <span>| I+D</span></div>
         <div class="menu-toggle" onclick="toggleMobileMenu()">☰</div>
         <div class="nav-links" id="nav-links">
-            <a href="#proyectos" data-i18n="nav_proyectos">Laboratorio de Desarrollo</a>
-            <a href="#udemy" data-i18n="nav_udemy">Formación Online</a>
-            <a href="#clases" data-i18n="nav_clases">Programas Presenciales</a>
-            <a href="#conocimiento" data-i18n="nav_conocimiento">Generación de Conocimiento</a>
+            <a href="#sobre-mi" data-i18n="nav_sobre_mi">Sobre mí</a>
+            <a href="#consultoria" data-i18n="nav_consultoria">Consultoría</a>
+            <a href="#clases" data-i18n="nav_clases">Clases y Cursos</a>
+            <a href="#proyectos" data-i18n="nav_proyectos">Laboratorio I+D</a>
+            <a href="#conocimiento" data-i18n="nav_conocimiento">Publicaciones</a>
             <a href="#contacto" data-i18n="nav_contacto">Contacto</a>
             <button id="lang-toggle" onclick="toggleLanguage()" style="background:var(--accent-color); color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; margin-left:20px; font-weight:bold;">EN</button>
         </div>
@@ -239,12 +243,50 @@
                 Dominio de técnicas de control clásico y avanzado, incluyendo PID, control adaptativo y controladores basados en IA, enfocado 
                 en la innovación, eficiencia y confiabilidad de sistemas electrónicos.</p>
         <div>
-            <a href="#contacto" class="btn" data-i18n="hero_btn1">Agendar Clase Institucional</a>
-            <a href="#udemy" class="btn btn-outline" data-i18n="hero_btn2">Ver Cursos en Udemy</a>
+            <a href="#sobre-mi" class="btn" data-i18n="hero_btn_cv">Ver Experiencia y CV</a>
+            <a href="#consultoria" class="btn btn-outline" data-i18n="hero_btn_consultoria">Consultoría para Empresas</a>
+            <a href="#clases" class="btn btn-outline" data-i18n="hero_btn2">Clases y Cursos</a>
         </div>
     </header>
 
-<section id="proyectos" class="section-light">
+<section id="sobre-mi" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="sobremi_title">Sobre mí</h2>
+            <p class="section-subtitle" data-i18n="sobremi_subtitle">Trayectoria profesional, formación y habilidades técnicas.</p>
+        </div>
+        <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); max-width: 1100px;">
+            <div class="card" onclick="abrirModal('experiencia')" style="cursor: default;">
+                <div class="card-icon">💼</div>
+                <h3 data-i18n="sobremi_experiencia_title">Experiencia Profesional</h3>
+                <p data-i18n="sobremi_experiencia_desc">Da clic para ver la Experiencia</p>
+            </div>
+            <div class="card" style="cursor: default;">
+    <div class="card-icon">🎓</div>
+    <h3 data-i18n="sobremi_educacion_title">Educación</h3>
+    
+    <div data-i18n="sobremi_educacion_desc" style="text-align: left;">
+        <ul style="margin: 10px 0 0 0; padding-left: 20px; line-height: 1.6;">
+            <li><strong>Doctorado en Ciencias en Ingeniería Electrónica</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">Agosto 2021 – Julio 2025</span></li>
+            
+            <li style="margin-top: 10px;"><strong>Maestría en Ciencias en Ingeniería Electrónica</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">Enero 2018 – Enero 2020</span></li>
+            
+            <li style="margin-top: 10px;"><strong>Ingeniería en Electrónica</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">Agosto 2011 – Noviembre 2016</span></li>
+        </ul>
+    </div>
+</div>
+            <div class="card" style="cursor: default;">
+                <div class="card-icon">🛠️</div>
+                <h3 data-i18n="sobremi_habilidades_title">Habilidades Técnicas</h3>
+                <p data-i18n="sobremi_habilidades_desc">MATLAB/Simulink, LTSpice, Python, Diseño de PCB de potencia, DSPs, Microcontroladores, FPGAs, Control PID, Control Adaptativo, IA aplicada al control, FCS-MPC.</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="documentos/cv_test.pdf" target="_blank" class="btn" data-i18n="sobremi_btn_cv">Descargar CV (PDF)</a>
+            <a href="https://www.linkedin.com/in/lfergaona" target="_blank" class="btn btn-outline" data-i18n="sobremi_btn_linkedin" style="color: #0A66C2; border-color: #0A66C2;">Ver LinkedIn</a>
+        </div>
+    </section>
+
+    <section id="proyectos" class="section-dark">
         <div class="section-header">
             <h2 class="section-title" data-i18n="proyectos_title">Laboratorio de Desarrollo (I+D)</h2>
         </div>
@@ -300,54 +342,83 @@
         </div>
     </section>
 
-    <section id="udemy" class="section-dark">
+    <section id="consultoria" class="section-light">
         <div class="section-header">
-            <h2 class="section-title" data-i18n="udemy_title">Formación Online (Udemy)</h2>
-            <p class="section-subtitle" data-i18n="udemy_subtitle">Aprende a tu propio ritmo con proyectos aplicados a la industria.</p>
+            <h2 class="section-title" data-i18n="consultoria_title">Consultoría para Empresas</h2>
+            <p class="section-subtitle" data-i18n="consultoria_subtitle">Diseño, validación y optimización de convertidores de potencia para tu producto o línea de producción.</p>
+        </div>
+        <div class="grid" style="max-width: 1000px; margin-bottom: 3rem;">
+            <div class="card" onclick="abrirModal('consultor')" style="cursor: pointer;">
+                <div class="card-icon">🏭</div>
+                <h3 data-i18n="clases_consultoria_title">Consultoría en Electrónica de Potencia</h3>
+                <p data-i18n="clases_consultoria_desc">Servicios de consultoría en electrónica de potencia.</p>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+        </div>
+        <div class="grid" style="max-width: 1000px;">
+            <div class="card" style="cursor: default;">
+                <div class="card-icon">🔍</div>
+                <h3 data-i18n="consultoria_paso1_title">1. Diagnóstico</h3>
+                <p data-i18n="consultoria_paso1_desc">Reunión técnica inicial para entender el reto: eficiencia, tamaño, costo o confiabilidad del sistema.</p>
+            </div>
+            <div class="card" style="cursor: default;">
+                <div class="card-icon">📐</div>
+                <h3 data-i18n="consultoria_paso2_title">2. Diseño y Modelado</h3>
+                <p data-i18n="consultoria_paso2_desc">Modelado matemático, simulación en MATLAB/Simulink o LTSpice, y selección de componentes.</p>
+            </div>
+            <div class="card" style="cursor: default;">
+                <div class="card-icon">✅</div>
+                <h3 data-i18n="consultoria_paso3_title">3. Validación</h3>
+                <p data-i18n="consultoria_paso3_desc">Pruebas de hardware en laboratorio y ajuste de control (PID, adaptativo o basado en IA).</p>
+            </div>
+            <div class="card" style="cursor: default;">
+                <div class="card-icon">🚀</div>
+                <h3 data-i18n="consultoria_paso4_title">4. Entrega</h3>
+                <p data-i18n="consultoria_paso4_desc">Documentación técnica completa y acompañamiento en la transferencia a producción.</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="mailto:luisgaonac4@gmail.com?subject=Consultoría%20-%20Solicitud%20de%20diagnóstico" class="btn" data-i18n="consultoria_btn">Agenda un Diagnóstico Técnico</a>
+        </div>
+    </section>
+
+    <section id="clases" class="section-dark">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="clases_title">Cursos y Programas Presenciales</h2>
+            <p class="section-subtitle" data-i18n="clases_subtitle">Programas para instituciones, empresas y estudiantes.</p>
         </div>
         <div class="grid">
-            <div class="card" style="border-top: 4px solid #a435f0;">
+            <div class="card" onclick="abrirModal('ia_aplicada')" style="cursor: pointer;">
+                <div class="card-icon">🧠</div>
+                <h3 data-i18n="clases_ia_title">Inteligencia Artificial Aplicada</h3>
+                <p data-i18n="clases_ia_desc">Programa inmersivo donde los alumnos aprenden a adquirir datos, entrenar modelos de IA y desplegarlos en microcontroladores.</p>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+            <div class="card" onclick="abrirModal('diferencial')" style="cursor: pointer;">
+                <div class="card-icon">📐</div>
+                <h3 data-i18n="clases_calculo_title">Cálculo Diferencial</h3>
+                <p data-i18n="clases_calculo_desc">Programa inmersivo de cálculo donde los alumnos aprenden las aplicaciones del cálculo diferencial en casos reales y prácticos, como videojuegos, analítica de datos, redes sociales e Inteligencia Artificial.</p>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+            
+            <div class="card" onclick="abrirModal('potencia')" style="cursor: pointer;">
+                <div class="card-icon">🔋</div>
+                <h3 data-i18n="clases_potencia_title">Convertidores DC-DC</h3>
+                <p data-i18n="clases_potencia_desc">Programa de electrónica de potencia donde el estudiante aprenderá a cómo analizar convertidores electrónicos CD-CD, obtendrá los modelos matemáticos y controlará el convertidor con técnicas de control clásicas como PID y avanzadas como IA y FCS-MPC.</p>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </div>
+
+            <div class="card" style="border-top: 4px solid #a435f0; cursor: default;">
                 <div><span class="udemy-badge" data-i18n="udemy_badge">Nuevo Curso en Udemy</span></div>
                 <h3 data-i18n="udemy_course_title">Python para Automatización de Reportes Industriales</h3>
-                <p data-i18n="udemy_course_desc">"Como ingenieros, se nos entrena rigurosamente para diseñar, calcular y resolver problemas matemáticos complejos. Sin embargo, pasamos una cantidad desproporcionada de nuestro tiempo laboral copiando y pegando gráficas de Excel a Word..."<br><br>En este curso abordaremos cómo la integración de herramientas como Python y la librería Pandas pueden transformar horas de trabajo administrativo en un script de 3 segundos, permitiéndote concentrarte en lo que realmente importa: la ingeniería.</p>
-                <div class="tags"><span class="tag">Pandas</span><span class="tag">Docxtpl</span><span class="tag">Weasyprint</span></div>
+                <p data-i18n="clases_udemy_short_desc">Curso online de Python y Pandas para automatizar reportes de ingeniería. Disponible ahora en Udemy.</p>
                 <a href="https://www.udemy.com/course/automatizacion-de-reportes-con-python-excel-word-y-pdf/?referralCode=5D35005E0E889F4E05A6" style="font-weight: bold; color: #a435f0;" data-i18n="udemy_link">> Ir al curso en Udemy</a>
             </div>
         </div>
     </section>
 
-    <section id="clases" class="section-light">
-        <div class="section-header">
-            <h2 class="section-title" data-i18n="clases_title">Cursos y Programas Presenciales</h2>
-        </div>
-        <div class="grid">
-            <div class="card" onclick="abrirModal('ia_aplicada')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
-                <div class="card-icon">🧠</div>
-                <h3 data-i18n="clases_ia_title">Inteligencia Artificial Aplicada</h3>
-                <p data-i18n="clases_ia_desc">Programa inmersivo donde los alumnos aprenden a adquirir datos, entrenar modelos de IA y desplegarlos en microcontroladores.</p>
-            </div>
-            
-            <div class="card" onclick="abrirModal('consultor')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
-                <div class="card-icon">🏭</div>
-                <h3 data-i18n="clases_consultoria_title">Consultoría</h3>
-                <p data-i18n="clases_consultoria_desc">Servicios de consultoría en electrónica de potencia.</p>
-            </div>
-            
-            <div class="card" onclick="abrirModal('diferencial')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
-                <div class="card-icon">📐</div>
-                <h3 data-i18n="clases_calculo_title">Cálculo Diferencial</h3>
-                <p data-i18n="clases_calculo_desc">Programa inmersivo de cálculo donde los alumnos aprenden las aplicaciones del cálculo diferencial en casos reales y prácticos, como videojuegos, analítica de datos, redes sociales e Inteligencia Artificial.</p>
-            </div>
-            
-            <div class="card" onclick="abrirModal('potencia')" style="cursor: pointer; transform: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); border-color: #e2e8f0;">
-                <div class="card-icon">🔋</div>
-                <h3 data-i18n="clases_potencia_title">Convertidores DC-DC</h3>
-                <p data-i18n="clases_potencia_desc">Programa de electrónica de potencia donde el estudiante aprenderá a cómo analizar convertidores electrónicos CD-CD, obtendrá los modelos matemáticos y controlará el convertidor con técnicas de control clásicas como PID y avanzadas como IA y FCS-MPC.</p>
-            </div>
-        </div>
-    </section>
-
-    <section id="conocimiento" class="section-dark">
+    <section id="conocimiento" class="section-light">
     <div class="section-header">
         <h2 class="section-title" data-i18n="conocimiento_title">Generación de Conocimiento</h2>
         <p class="section-subtitle" data-i18n="conocimiento_subtitle">Publicaciones, manuales y recursos bibliográficos.</p>
@@ -381,7 +452,11 @@
         <p style="font-size: 1.15rem; color: var(--text-muted); max-width: 600px; margin: 0 auto 3rem auto; line-height: 1.8;" data-i18n="contacto_desc">
             Si quieres saber más acerca de los cursos, como temario detallado y costos de implementación para tu escuela o empresa, contáctame para agendar una reunión técnica.
         </p>
-        <a href="mailto:luisgaonac4@gmail.com" class="btn" style="font-size: 1.1rem; padding: 1rem 2.5rem;" data-i18n="contacto_btn">Contactar por Correo</a>
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem;">
+            <a href="mailto:luisgaonac4@gmail.com?subject=Oportunidad%20laboral" class="btn" style="font-size: 1rem; padding: 1rem 1.8rem;" data-i18n="contacto_btn_empleo">Quiero contratarte</a>
+            <a href="mailto:luisgaonac4@gmail.com?subject=Consultoría%20para%20empresa" class="btn btn-outline" style="font-size: 1rem; padding: 1rem 1.8rem; margin-left: 0; color: #0A66C2; border-color: #0A66C2;" data-i18n="contacto_btn_consultoria">Consultoría para mi empresa</a>
+            <a href="mailto:luisgaonac4@gmail.com?subject=Clases%20para%20institución" class="btn btn-outline" style="font-size: 1rem; padding: 1rem 1.8rem; margin-left: 0; color: #0A66C2; border-color: #0A66C2;" data-i18n="contacto_btn_clases">Clases para mi institución</a>
+        </div>
     </section>
 
     <footer>
@@ -882,6 +957,116 @@ const datosProyectos = {
                         systems, providing a comprehensive, automated approach tailored to the objectives of each project.</p> 
                 `
             }
+        },
+            'experiencia': {
+    es: {
+        titulo: 'Experiencia Laboral',
+        contenido: `
+            <h4>Trayectoria Profesional</h4>
+            
+            <!-- Trabajo 1 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Ingeniero de Diseño e Investigación en Electrónica de Potencia (Proyecto de Doctorado)</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">Tecnológico Nacional de México — Guanajuato, México | Agosto 2021 – Julio 2025</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Diseñé y optimicé convertidores CD-CD y CA-CD con enfoque en eficiencia.</li>
+                    <li>Implementé control digital avanzado (PID, adaptativo, IA) en VHDL sobre FPGA.</li>
+                    <li>Desarrollé PCBs de señal mixta aplicando DFM/DFA con Altium Designer.</li>
+                    <li>Validé integridad de señal/potencia mediante simulación en MATLAB y LTspice.</li>
+                    <li>Apliqué redes neuronales para detección de fallas en convertidores CA-CD con precisión superior al 95% (hasta 99.95% en la implementación final publicada).</li>
+                </ul>
+            </div>
+
+            <!-- Trabajo 2 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Ingeniero de Diseño de Electrónica de Potencia</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">PROSEELIA — Guanajuato, México | Enero 2020 – Julio 2021</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Diseñé convertidores de potencia a medida y sus PCBs aplicando DFM/DFA en Altium Designer.</li>
+                    <li>Generé documentación técnica y archivos de fabricación para producción.</li>
+                    <li>Validé eléctricamente prototipos y coordiné pruebas para la certificación de productos.</li>
+                </ul>
+            </div>
+
+            <!-- Trabajo 3 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Interno de Maestría</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">Universidad Tecnológica de Ontario — Ontario, Canadá | Agosto 2019 – Diciembre 2019</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Diseñé PCBs de 2 y 4 capas para convertidores CD-CD utilizados en aplicaciones de movilidad eléctrica.</li>
+                    <li>Desarrollé un convertidor de múltiples entradas para la gestión de energía entre batería, supercapacitor y panel solar.</li>
+                    <li>Validé el desempeño del sistema mediante simulaciones en PSIM y pruebas de laboratorio.</li>
+                    <li>Colaboré con un equipo internacional de investigación y presenté resultados técnicos ante el comité académico.</li>
+                </ul>
+            </div>
+
+            <!-- Trabajo 4 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Ingeniero de Producto</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">POLIGRAPACK — Guanajuato, México | Noviembre 2016 – Enero 2018</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Gestioné el desarrollo de nuevos productos: definición de especificaciones, diseño, prototipado y pruebas.</li>
+                    <li>Generé documentación técnica completa: especificaciones de diseño, diagramas de flujo y manuales de usuario.</li>
+                    <li>Desarrollé e implementé manuales operativos estandarizados, reduciendo el tiempo de capacitación del nuevo personal.</li>
+                    <li>Programé y configuré controladores lógicos programables (PLC) para la automatización de maquinaria.</li>
+                </ul>
+            </div>
+        `
+    },
+            en: {
+        titulo: 'Professional Experience',
+        contenido: `
+            <h4>Career Path</h4>
+            
+            <!-- Trabajo 1 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Power Electronics Design and Research Engineer (PhD Project)</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">Tecnológico Nacional de México — Guanajuato, Mexico | August 2021 – July 2025</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Designed and optimized DC-DC and AC-DC converters with a focus on efficiency.</li>
+                    <li>Implemented advanced digital control (PID, adaptive, AI) in VHDL on FPGA.</li>
+                    <li>Developed mixed-signal PCBs applying DFM/DFA using Altium Designer.</li>
+                    <li>Validated signal and power integrity through simulation in MATLAB and LTspice.</li>
+                    <li>Applied neural networks for fault detection in AC-DC converters with over 95% accuracy (up to 99.95% in the final published implementation).</li>
+                </ul>
+            </div>
+
+            <!-- Trabajo 2 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Power Electronics Design Engineer</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">PROSEELIA — Guanajuato, Mexico | January 2020 – July 2021</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Designed custom power converters and their PCBs applying DFM/DFA in Altium Designer.</li>
+                    <li>Generated technical documentation and manufacturing files for production.</li>
+                    <li>Electrically validated prototypes and coordinated testing for product certification.</li>
+                </ul>
+            </div>
+
+            <!-- Trabajo 3 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Master's Research Intern</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">Ontario Tech University — Ontario, Canada | August 2019 – December 2019</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Designed 2- and 4-layer PCBs for DC-DC converters used in electric mobility applications.</li>
+                    <li>Developed a multi-input converter for power management between a battery, supercapacitor, and solar panel.</li>
+                    <li>Validated system performance through PSIM simulations and laboratory testing.</li>
+                    <li>Collaborated with an international research team and presented technical results to the academic committee.</li>
+                </ul>
+            </div>
+
+            <!-- Trabajo 4 -->
+            <div style="margin-bottom: 20px;">
+                <h5 style="margin-bottom: 5px; font-size: 1.1em; color: #333;">Product Engineer</h5>
+                <p style="margin: 0; font-size: 0.9em; font-style: italic; color: #666;">POLIGRAPACK — Guanajuato, Mexico | November 2016 – January 2018</p>
+                <ul style="margin-top: 10px; padding-left: 20px;">
+                    <li>Managed new product development: specification definition, design, prototyping, and testing.</li>
+                    <li>Generated comprehensive technical documentation: design specifications, flowcharts, and user manuals.</li>
+                    <li>Developed and implemented standardized operational manuals, reducing training time for new personnel.</li>
+                    <li>Programmed and configured Programmable Logic Controllers (PLCs) for machinery automation.</li>
+                </ul>
+            </div>
+        `
+    },
         }
 };
 
@@ -891,15 +1076,61 @@ let currentLang = 'es';
 // Diccionario de traducciones generales
 const translations = {
     es: {
-        nav_proyectos: "Laboratorio de Desarrollo",
+        nav_sobre_mi: "Sobre mí",
+        nav_consultoria: "Consultoría",
+        nav_proyectos: "Laboratorio I+D",
         nav_udemy: "Formación Online",
-        nav_clases: "Programas Presenciales",
-        nav_conocimiento: "Generación de Conocimiento",
+        nav_clases: "Clases y Cursos",
+        nav_conocimiento: "Publicaciones",
         nav_contacto: "Contacto",
         hero_subtitle: "PhD en Electrónica de Potencia & IA | Creador de Contenido Educativo",
         hero_desc: "Ingeniero en Electrónica con Maestría y Doctorado en Electrónica de Potencia. Especialista en el diseño, simulación y control avanzado de convertidores de energía (CD-CD, CA-CD) para los sectores automotriz, industrial y de energías renovables. Experto en diseño de PCBs de potencia, selección de componentes y validación de hardware en laboratorio. Amplia experiencia en el ciclo de diseño basado en modelos (Model-Based Design) utilizando MATLAB/Simulink y LTSpice, con capacidad probada para trasladar modelos de simulación a implementaciones en tiempo real sobre plataformas embebidas como DSPs, microcontroladores y FPGAs. Dominio de técnicas de control clásico y avanzado, incluyendo PID, control adaptativo y controladores basados en IA, enfocado en la innovación, eficiencia y confiabilidad de sistemas electrónicos.",
         hero_btn1: "Agendar Clase Institucional",
-        hero_btn2: "Ver Cursos en Udemy",
+        hero_btn_cv: "Ver Experiencia y CV",
+        hero_btn_consultoria: "Consultoría para Empresas",
+        hero_btn2: "Clases y Cursos",
+
+        // Sobre mí / CV
+        sobremi_title: "Sobre mí",
+        sobremi_subtitle: "Trayectoria profesional, formación y habilidades técnicas.",
+        sobremi_experiencia_title: "Experiencia Profesional",
+        sobremi_experiencia_desc: "Da clic para ver la Experiencia",
+        sobremi_educacion_title: "Educación",
+        sobremi_educacion_desc: `
+    <ul style="margin: 10px 0 0 0; padding-left: 20px; line-height: 1.6;">
+        <li><strong>Doctorado en Ciencias en Ingeniería Electrónica</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">Agosto 2021 – Julio 2025</span></li>
+        
+        <li style="margin-top: 10px;"><strong>Maestría en Ciencias en Ingeniería Electrónica</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">Enero 2018 – Enero 2020</span></li>
+        
+        <li style="margin-top: 10px;"><strong>Ingeniería en Electrónica</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">Agosto 2011 – Noviembre 2016</span></li>
+    </ul>
+`,
+        sobremi_habilidades_title: "Habilidades Técnicas",
+        sobremi_habilidades_desc: "MATLAB/Simulink, LTSpice, Python, Diseño de PCB de potencia, DSPs, Microcontroladores, FPGAs, Control PID, Control Adaptativo, IA aplicada al control, FCS-MPC.",
+        sobremi_btn_cv: "Descargar CV (PDF)",
+        sobremi_btn_linkedin: "Ver LinkedIn",
+
+        // Consultoría
+        consultoria_title: "Consultoría para Empresas",
+        consultoria_subtitle: "Diseño, validación y optimización de convertidores de potencia para tu producto o línea de producción.",
+        consultoria_paso1_title: "1. Diagnóstico",
+        consultoria_paso1_desc: "Reunión técnica inicial para entender el reto: eficiencia, tamaño, costo o confiabilidad del sistema.",
+        consultoria_paso2_title: "2. Diseño y Modelado",
+        consultoria_paso2_desc: "Modelado matemático, simulación en MATLAB/Simulink o LTSpice, y selección de componentes.",
+        consultoria_paso3_title: "3. Validación",
+        consultoria_paso3_desc: "Pruebas de hardware en laboratorio y ajuste de control (PID, adaptativo o basado en IA).",
+        consultoria_paso4_title: "4. Entrega",
+        consultoria_paso4_desc: "Documentación técnica completa y acompañamiento en la transferencia a producción.",
+        consultoria_btn: "Agenda un Diagnóstico Técnico",
+
+        // Contacto segmentado
+        contacto_btn_empleo: "Quiero contratarte",
+        contacto_btn_consultoria: "Consultoría para mi empresa",
+        contacto_btn_clases: "Clases para mi institución",
+
+        clases_subtitle: "Programas para instituciones, empresas y estudiantes.",
+        clases_udemy_short_desc: "Curso online de Python y Pandas para automatizar reportes de ingeniería. Disponible ahora en Udemy.",
+
         // Agrega aquí todas las demás llaves para títulos de secciones, botones, etc.
         // Pilar 4: Generación de Conocimiento
         conocimiento_title: "Generación de Conocimiento",
@@ -956,16 +1187,61 @@ const translations = {
         footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente."
     },
     en: {
+        nav_sobre_mi: "About Me",
+        nav_consultoria: "Consulting",
         nav_proyectos: "R&D Laboratory",
         nav_udemy: "Online Training",
-        nav_clases: "On-site Programs",
-        nav_conocimiento: "Knowledge Generation",
+        nav_clases: "Classes & Courses",
+        nav_conocimiento: "Publications",
         nav_contacto: "Contact",
         hero_subtitle: "PhD in Power Electronics & AI | Educational Content Creator",
         hero_desc: "Electronics Engineer with a Master's and PhD in Power Electronics. Specialist in the design, simulation, and advanced control of power converters (DC-DC, AC-DC) for the automotive, industrial, and renewable energy sectors. Expert in power PCB design, component selection, and laboratory hardware validation. Extensive experience in the Model-Based Design cycle using MATLAB/Simulink and LTSpice, with proven ability to transfer simulation models to real-time implementations on embedded platforms such as DSPs, microcontrollers, and FPGAs. Mastery of classic and advanced control techniques, including PID, adaptive control, and AI-based controllers, focused on the innovation, efficiency, and reliability of electronic systems.",
         hero_btn1: "Schedule Institutional Class",
-        hero_btn1: "Schedule Institutional Class",
-        hero_btn2: "View Courses on Udemy",
+        hero_btn_cv: "View Experience & CV",
+        hero_btn_consultoria: "Consulting for Companies",
+        hero_btn2: "Classes & Courses",
+
+        // About Me / CV
+        sobremi_title: "About Me",
+        sobremi_subtitle: "Professional background, education, and technical skills.",
+        sobremi_experiencia_title: "Professional Experience",
+        sobremi_experiencia_desc: "Click to see the Experience",
+        sobremi_educacion_title: "Education",
+        sobremi_educacion_desc: `
+    <ul style="margin: 10px 0 0 0; padding-left: 20px; line-height: 1.6;">
+        <li><strong>PhD in Electronic Engineering Sciences</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">August 2021 – July 2025</span></li>
+        
+        <li style="margin-top: 10px;"><strong>Master of Science in Electronic Engineering</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">January 2018 – January 2020</span></li>
+        
+        <li style="margin-top: 10px;"><strong>Bachelor's in Electronic Engineering</strong><br>Tecnológico Nacional de México<br><span style="font-size: 0.9em; color: #666;">August 2011 – November 2016</span></li>
+    </ul>
+`,
+        sobremi_habilidades_title: "Technical Skills",
+        sobremi_habilidades_desc: "MATLAB/Simulink, LTSpice, Python, Power PCB Design, DSPs, Microcontrollers, FPGAs, PID Control, Adaptive Control, AI-based Control, FCS-MPC.",
+        sobremi_btn_cv: "Download CV (PDF)",
+        sobremi_btn_linkedin: "View LinkedIn",
+
+        // Consulting
+        consultoria_title: "Consulting for Companies",
+        consultoria_subtitle: "Design, validation, and optimization of power converters for your product or production line.",
+        consultoria_paso1_title: "1. Diagnosis",
+        consultoria_paso1_desc: "Initial technical meeting to understand the challenge: efficiency, size, cost, or system reliability.",
+        consultoria_paso2_title: "2. Design & Modeling",
+        consultoria_paso2_desc: "Mathematical modeling, simulation in MATLAB/Simulink or LTSpice, and component selection.",
+        consultoria_paso3_title: "3. Validation",
+        consultoria_paso3_desc: "Hardware testing in the lab and control tuning (PID, adaptive, or AI-based).",
+        consultoria_paso4_title: "4. Delivery",
+        consultoria_paso4_desc: "Complete technical documentation and support through the transfer to production.",
+        consultoria_btn: "Schedule a Technical Diagnosis",
+
+        // Segmented contact
+        contacto_btn_empleo: "Hire Me",
+        contacto_btn_consultoria: "Consulting for My Company",
+        contacto_btn_clases: "Classes for My Institution",
+
+        clases_subtitle: "Programs for institutions, companies, and students.",
+        clases_udemy_short_desc: "Online Python and Pandas course to automate engineering reports. Available now on Udemy.",
+
         // ...
         conocimiento_title: "Knowledge Generation",
         conocimiento_subtitle: "Publications, manuals, and bibliographic resources.",
