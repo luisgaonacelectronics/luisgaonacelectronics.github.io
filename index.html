@@ -72,7 +72,7 @@
         .section-subtitle { color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; }
         .section-title::after { content: ''; display: block; width: 80px; height: 4px; background-color: var(--accent-color); margin: 15px auto 0 auto; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.5rem; max-width: 1200px; margin: 0 auto; }
 
         /* Estilo para las tarjetas interactivas */
         .card {
@@ -161,11 +161,55 @@
         #modal-body ul { margin-left: 20px; margin-bottom: 1rem; color: var(--text-main); }
         #modal-body li { margin-bottom: 0.5rem; }
 
+        /* ========================
+           Adaptación a Móviles
+           ======================== */
+        .menu-toggle {
+            display: none;
+            font-size: 1.8rem;
+            color: var(--white);
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
-            .nav-links { display: none; }
-            .hero h1 { font-size: 2.5rem; }
+            /* Reducir espacios enormes en móviles */
+            .hero { padding: 5rem 5% 4rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero h2 { font-size: 1.2rem; }
+            section { padding: 4rem 5%; }
+            .section-title { font-size: 2rem; }
+            
+            /* Ajustes de botones e imágenes modales */
             .btn-outline { margin-left: 0; margin-top: 1rem; display: block; }
-            .modal-content { padding: 1.5rem; width: 95%; }
+            .modal-content { padding: 2rem 1.5rem; width: 95%; }
+            .modal-img { width: 100%; }
+
+            /* Menú Hamburguesa */
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: -100%;
+                width: 100%;
+                background-color: var(--primary-color);
+                text-align: center;
+                transition: left 0.3s ease;
+                padding-bottom: 1rem;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+            }
+            .nav-links.active {
+                left: 0; /* Desliza el menú hacia adentro */
+            }
+            .nav-links a {
+                margin: 1rem 0;
+                font-size: 1.1rem;
+            }
+            #lang-toggle {
+                margin: 1rem auto;
+                width: fit-content;
+            }
         }
     </style>
 </head>
@@ -173,7 +217,8 @@
 
     <nav>
         <div class="nav-logo">Dr. Luis Gaona <span>| I+D</span></div>
-        <div class="nav-links">
+        <div class="menu-toggle" onclick="toggleMobileMenu()">☰</div>
+        <div class="nav-links" id="nav-links">
             <a href="#proyectos" data-i18n="nav_proyectos">Laboratorio de Desarrollo</a>
             <a href="#udemy" data-i18n="nav_udemy">Formación Online</a>
             <a href="#clases" data-i18n="nav_clases">Programas Presenciales</a>
@@ -1028,6 +1073,21 @@ function toggleLanguage() {
                 cerrarModal();
             }
         }
+
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Cerrar el menú al hacer clic en un enlace (solo móviles)
+        document.querySelectorAll('.nav-links a').forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                const navLinks = document.getElementById('nav-links');
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
     </script>
 </body>
 </html>
