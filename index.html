@@ -292,12 +292,12 @@
         </div>
         <div class="grid">
             
-            <div class="card" onclick="abrirModal('corevolt')">
+            <a class="card" href="corevolt.html" onclick="localStorage.setItem('idiomaSitio', currentLang)">
                 <div class="card-icon">⚡</div>
                 <h3>CoreVolt</h3> <p data-i18n="corevolt_card_desc">Desarrollo de software propietario para la selección automatizada de componentes en convertidores DC-DC y AC-DC...</p>
                 <div class="tags"><span class="tag">Python</span><span class="tag">ML</span></div>
                 <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
-            </div>
+            </a>
 
             <div class="card" onclick="abrirModal('control_strategies')">
                 <div class="card-icon">🎛️</div>
@@ -1302,6 +1302,7 @@ const translations = {
 function toggleLanguage() {
     // Alternar idioma
     currentLang = currentLang === 'es' ? 'en' : 'es';
+    localStorage.setItem('idiomaSitio', currentLang);
     
     // Actualizar el texto del botón
     document.getElementById('lang-toggle').innerText = currentLang === 'es' ? 'EN' : 'ES';
@@ -1364,6 +1365,14 @@ function toggleLanguage() {
                 }
             });
         });
+
+        // Al cargar, respeta el idioma con el que se venía navegando (ej. desde corevolt.html)
+        (function aplicarIdiomaGuardado() {
+            const idiomaGuardado = localStorage.getItem('idiomaSitio');
+            if (idiomaGuardado && idiomaGuardado !== currentLang) {
+                toggleLanguage();
+            }
+        })();
     </script>
 </body>
 </html>

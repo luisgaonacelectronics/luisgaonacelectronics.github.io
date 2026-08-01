@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="imagenes/chip.png">
+    <title>CoreVolt | Software de Diseño para Convertidores de Potencia</title>
+    <meta name="description" content="CoreVolt: plataforma de software para el diseño analítico, validación preliminar y comprensión didáctica de convertidores de potencia CD-CD y CA-CD.">
+    <meta property="og:title" content="CoreVolt | Software de Diseño para Convertidores de Potencia">
+    <meta property="og:description" content="Plataforma de software para el diseño analítico y validación de convertidores de potencia, desarrollada por Dr. Luis Fernando Gaona.">
+    <style>
+        /* ========================
+           Variables y Reseteo (mismas que el sitio principal)
+           ======================== */
+        :root {
+            --primary-color: #1a202c;
+            --secondary-color: #2d3748;
+            --accent-color: #00979c;
+            --accent-hover: #007a7e;
+            --bg-light: #f7fafc;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --white: #ffffff;
+            --donate-color: #e07b39;
+            --donate-hover: #c9652a;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        a { text-decoration: none; color: var(--accent-color); }
+
+        /* Navegación */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-logo { color: var(--white); font-weight: bold; font-size: 1.3rem; }
+        .nav-logo span { color: var(--accent-color); }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { color: var(--white); margin-left: 2rem; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-color); }
+        #lang-toggle { background: var(--accent-color); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 2rem; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; color: var(--white); font-size: 1.6rem; cursor: pointer; background: none; border: none; }
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: -100%;
+                width: 100%;
+                background-color: var(--primary-color);
+                text-align: center;
+                transition: left 0.3s ease;
+                padding-bottom: 1rem;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { left: 0; }
+            .nav-links a { margin: 1rem 0; font-size: 1.1rem; }
+            #lang-toggle { margin: 1rem auto; }
+        }
+        @media (min-width: 769px) {
+            .menu-toggle { display: none; }
+        }
+
+        /* Hero de CoreVolt */
+        .hero-corevolt {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 6rem 5% 5rem;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+        }
+        .breadcrumb { display: inline-block; margin-bottom: 1.5rem; color: #cbd5e0; font-size: 0.95rem; }
+        .breadcrumb a { color: var(--accent-color); font-weight: 600; }
+        .hero-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .hero-corevolt h1 { font-size: 3rem; margin-bottom: 0.8rem; }
+        .hero-corevolt h2 { font-size: 1.3rem; color: var(--accent-color); font-weight: 400; margin-bottom: 2rem; }
+        .hero-corevolt p { max-width: 900px; margin: 0 auto 2.5rem auto; color: #cbd5e0; font-size: 1.05rem; }
+
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--white); padding: 0.8rem 2rem; border-radius: 6px; font-weight: bold; transition: background 0.3s, transform 0.2s; margin: 0.4rem; border: none; cursor: pointer; font-size: 1rem; }
+        .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--accent-color); }
+        .btn-donate { background-color: var(--donate-color); }
+        .btn-donate:hover { background-color: var(--donate-hover); }
+
+        section { padding: 5rem 5%; }
+        .section-light { background-color: var(--white); }
+        .section-dark { background-color: var(--bg-light); }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section-title { font-size: 2.3rem; color: var(--primary-color); }
+        .section-subtitle { color: var(--text-muted); font-size: 1.05rem; margin-top: 0.5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 4px; background-color: var(--accent-color); margin: 15px auto 0 auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.2rem; max-width: 1200px; margin: 0 auto; }
+
+        /* Tarjetas de características */
+        .feature-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent-color);
+        }
+        .feature-icon { font-size: 2.2rem; margin-bottom: 1.2rem; }
+        .feature-card h3 { color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Galería de imágenes (el usuario agregará sus propias imágenes) */
+        .gallery-item {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+            background-color: #edf2f7;
+        }
+        .gallery-caption { padding: 1rem 1.2rem; color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Video */
+        .video-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .video-wrapper video, .video-wrapper iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: block;
+            background-color: #1a202c;
+        }
+
+        /* Sección de donación */
+        .donate-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            text-align: center;
+            border-top: 5px solid var(--donate-color);
+        }
+        .donate-section .section-title { color: var(--white); }
+        .donate-section .section-title::after { background-color: var(--donate-color); }
+        .donate-section p { max-width: 700px; margin: 0 auto 2rem auto; color: #cbd5e0; }
+
+        .tags { margin-bottom: 1rem; }
+        .tag { display: inline-block; background: #edf2f7; color: var(--primary-color); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 500; margin: 0 5px 5px 0; }
+
+        footer { background-color: var(--primary-color); color: #a0aec0; text-align: center; padding: 3rem 5%; }
+
+        .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">Dr. Luis Gaona <span>| I+D</span></div>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        <div class="nav-links" id="nav-links">
+            <a href="index.html" data-i18n="nav_volver">← Volver a Proyectos</a>
+            <a href="#caracteristicas" data-i18n="nav_caracteristicas">Características</a>
+            <a href="#galeria" data-i18n="nav_galeria">Galería</a>
+            <a href="#video" data-i18n="nav_video">Video</a>
+            <a href="#donar" data-i18n="nav_donar">Donar</a>
+            <button id="lang-toggle" onclick="toggleLanguage()">EN</button>
+        </div>
+    </nav>
+
+    <header class="hero-corevolt">
+        <div class="breadcrumb"><a href="index.html" data-i18n="breadcrumb">← Laboratorio de Desarrollo (I+D)</a></div>
+        <div class="hero-icon">⚡</div>
+        <h1>CoreVolt</h1>
+        <h2 data-i18n="hero_subtitle">Software de diseño analítico para convertidores de potencia</h2>
+        <p data-i18n="hero_desc">CoreVolt es una plataforma de software especializada, desarrollada para facilitar el diseño analítico,
+            la validación preliminar y la comprensión didáctica de los convertidores de potencia CD-CD y CA-CD. Actúa como una
+            capa intermedia entre el diseño analítico de los libros de texto y los entornos de simulación de circuitos a escala
+            real, permitiendo iterar rápidamente el diseño sin perder la comprensión física del funcionamiento del convertidor.</p>
+        <div class="cta-row">
+            <a href="#caracteristicas" class="btn" data-i18n="btn_caracteristicas">Ver Características</a>
+            <a href="descargas/corevolt-setup.exe" download class="btn btn-outline" style="display: inline-flex; align-items: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="7 10 12 15 17 10"></polyline>
+                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span data-i18n="btn_descargar">Descargar</span>
+            </a>
+            <a href="#donar" class="btn btn-donate" data-i18n="btn_donar_hero">💛 Apoyar el Proyecto</a>
+        </div>
+    </header>
+
+    <!-- ==============================================
+         CARACTERÍSTICAS
+         ============================================== -->
+    <section id="caracteristicas" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="caracteristicas_title">Características</h2>
+            <p class="section-subtitle" data-i18n="caracteristicas_subtitle">Todo lo que CoreVolt ofrece para el diseño de convertidores de potencia.</p>
+        </div>
+        <div class="grid">
+            <div class="feature-card">
+                <div class="feature-icon">🧮</div>
+                <h3 data-i18n="feat1_title">Diseño Analítico Guiado</h3>
+                <p data-i18n="feat1_desc">Flujo de trabajo transparente donde cada cálculo se basa en principios bien establecidos de la electrónica de potencia, asociando claramente las especificaciones con los valores de los componentes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔌</div>
+                <h3 data-i18n="feat2_title">Múltiples Topologías</h3>
+                <p data-i18n="feat2_desc">Soporte para convertidores Buck, Boost, DAB y Cuk, con planes de expansión a nuevas topologías CD-CD y CA-CD.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🤖</div>
+                <h3 data-i18n="feat3_title">Modelos Subrogados de Pérdidas</h3>
+                <p data-i18n="feat3_desc">Modelos basados en aprendizaje automático que predicen las pérdidas de potencia del convertidor sin necesidad de simulaciones exhaustivas.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚖️</div>
+                <h3 data-i18n="feat4_title">Optimización Multi-objetivo</h3>
+                <p data-i18n="feat4_desc">Balancea automáticamente eficiencia energética contra volumen físico para encontrar el diseño óptimo según tus restricciones.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 data-i18n="feat5_title">Cálculo de Rizado y Límites</h3>
+                <p data-i18n="feat5_desc">Determina automáticamente magnitudes de ondulación de corriente y voltaje, y los límites de operación segura del convertidor.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎓</div>
+                <h3 data-i18n="feat6_title">Enfoque Didáctico</h3>
+                <p data-i18n="feat6_desc">Pensado para la enseñanza académica y la validación previa al desarrollo de hardware, ideal para estudiantes e ingenieros en formación.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         GALERÍA (el usuario agrega sus propias imágenes)
+         ============================================== -->
+    <section id="galeria" class="section-dark">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="galeria_title">Galería</h2>
+            <p class="section-subtitle" data-i18n="galeria_subtitle">Vistas de la interfaz y del flujo de diseño de CoreVolt.</p>
+        </div>
+        <div class="grid">
+            <!-- Reemplaza el src de cada imagen por las tuyas dentro de la carpeta "imagenes/" -->
+            <div class="gallery-item">
+                <img src="imagenes/corevolt-1.png" alt="CoreVolt - captura 1">
+                <div class="gallery-caption" data-i18n="galeria_img1">Interfaz principal de diseño.</div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagenes/corevolt-2.png" alt="CoreVolt - captura 2">
+                <div class="gallery-caption" data-i18n="galeria_img2">Resultados de cálculo de componentes.</div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagenes/corevolt-3.png" alt="CoreVolt - captura 3">
+                <div class="gallery-caption" data-i18n="galeria_img3">Curvas de eficiencia vs. volumen.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         VIDEO (el usuario agrega su propio video)
+         ============================================== -->
+    <section id="video" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="video_title">Video Demostrativo</h2>
+            <p class="section-subtitle" data-i18n="video_subtitle">Mira a CoreVolt en acción.</p>
+        </div>
+        <div class="video-wrapper">
+            <!-- Opción A: video propio subido a la carpeta "videos/" -->
+            <video controls poster="imagenes/corevolt-poster.png">
+                <source src="videos/corevolt-demo.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+            <!-- Opción B: si prefieres usar YouTube/Vimeo, borra la etiqueta <video> de arriba
+                 y descomenta el iframe de abajo, reemplazando VIDEO_ID por el tuyo:
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="CoreVolt Demo" frameborder="0" allowfullscreen></iframe>
+            -->
+        </div>
+    </section>
+
+    <!-- ==============================================
+         DONAR
+         ============================================== -->
+    <section id="donar" class="donate-section">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="donar_title">Apoya este Proyecto</h2>
+        </div>
+        <p data-i18n="donar_desc">CoreVolt es un desarrollo independiente. Si te resulta útil y quieres ayudar a que siga creciendo
+            (nuevas topologías, más funciones y mejor documentación), considera hacer una donación.</p>
+        <div class="cta-row">
+            <!-- Reemplaza este enlace por tu página real de donación (PayPal, Buy Me a Coffee, Ko-fi, etc.) -->
+            <a href="https://buymeacoffee.com/lg7050715x" target="_blank" class="btn btn-donate" data-i18n="btn_donar">💛 Donar Ahora</a>
+            <a href="descargas/corevolt-setup.exe" download class="btn btn-outline" style="border-color: #fff; color: #fff;" data-i18n="btn_descargar2">Descargar CoreVolt</a>
+        </div>
+    </section>
+
+    <footer>
+        <p data-i18n="footer_text">&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente.</p>
+    </footer>
+
+    <script>
+        let currentLang = localStorage.getItem('idiomaSitio') || 'es';
+
+        const translations = {
+            es: {
+                nav_volver: "← Volver a Proyectos",
+                nav_caracteristicas: "Características",
+                nav_galeria: "Galería",
+                nav_video: "Video",
+                nav_donar: "Donar",
+                breadcrumb: "← Laboratorio de Desarrollo (I+D)",
+                hero_subtitle: "Software de diseño analítico para convertidores de potencia",
+                hero_desc: "CoreVolt es una plataforma de software especializada, desarrollada para facilitar el diseño analítico, la validación preliminar y la comprensión didáctica de los convertidores de potencia CD-CD y CA-CD. Actúa como una capa intermedia entre el diseño analítico de los libros de texto y los entornos de simulación de circuitos a escala real, permitiendo iterar rápidamente el diseño sin perder la comprensión física del funcionamiento del convertidor.",
+                btn_caracteristicas: "Ver Características",
+                btn_descargar: "Descargar",
+                btn_donar_hero: "💛 Apoyar el Proyecto",
+                caracteristicas_title: "Características",
+                caracteristicas_subtitle: "Todo lo que CoreVolt ofrece para el diseño de convertidores de potencia.",
+                feat1_title: "Diseño Analítico Guiado",
+                feat1_desc: "Flujo de trabajo transparente donde cada cálculo se basa en principios bien establecidos de la electrónica de potencia, asociando claramente las especificaciones con los valores de los componentes.",
+                feat2_title: "Múltiples Topologías",
+                feat2_desc: "Soporte para convertidores Buck, Boost, DAB y Cuk, con planes de expansión a nuevas topologías CD-CD y CA-CD.",
+                feat3_title: "Modelos Subrogados de Pérdidas",
+                feat3_desc: "Modelos basados en aprendizaje automático que predicen las pérdidas de potencia del convertidor sin necesidad de simulaciones exhaustivas.",
+                feat4_title: "Optimización Multi-objetivo",
+                feat4_desc: "Balancea automáticamente eficiencia energética contra volumen físico para encontrar el diseño óptimo según tus restricciones.",
+                feat5_title: "Cálculo de Rizado y Límites",
+                feat5_desc: "Determina automáticamente magnitudes de ondulación de corriente y voltaje, y los límites de operación segura del convertidor.",
+                feat6_title: "Enfoque Didáctico",
+                feat6_desc: "Pensado para la enseñanza académica y la validación previa al desarrollo de hardware, ideal para estudiantes e ingenieros en formación.",
+                galeria_title: "Galería",
+                galeria_subtitle: "Vistas de la interfaz y del flujo de diseño de CoreVolt.",
+                galeria_img1: "Interfaz principal de diseño.",
+                galeria_img2: "Resultados de cálculo de componentes.",
+                galeria_img3: "Curvas de eficiencia vs. volumen.",
+                video_title: "Video Demostrativo",
+                video_subtitle: "Mira a CoreVolt en acción.",
+                donar_title: "Apoya este Proyecto",
+                donar_desc: "CoreVolt es un desarrollo independiente. Si te resulta útil y quieres ayudar a que siga creciendo (nuevas topologías, más funciones y mejor documentación), considera hacer una donación.",
+                btn_donar: "💛 Donar Ahora",
+                btn_descargar2: "Descargar CoreVolt",
+                footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente."
+            },
+            en: {
+                nav_volver: "← Back to Projects",
+                nav_caracteristicas: "Features",
+                nav_galeria: "Gallery",
+                nav_video: "Video",
+                nav_donar: "Donate",
+                breadcrumb: "← R&D Development Laboratory",
+                hero_subtitle: "Analytical design software for power converters",
+                hero_desc: "CoreVolt is a specialized software platform developed to facilitate the analytical design, preliminary validation, and didactic understanding of DC-DC and AC-DC power converters. It acts as an intermediate layer between textbook analytical design and full-scale circuit simulation environments, allowing for rapid design iteration while maintaining a physical understanding of the converter's operation.",
+                btn_caracteristicas: "View Features",
+                btn_descargar: "Download",
+                btn_donar_hero: "💛 Support the Project",
+                caracteristicas_title: "Features",
+                caracteristicas_subtitle: "Everything CoreVolt offers for power converter design.",
+                feat1_title: "Guided Analytical Design",
+                feat1_desc: "A transparent workflow where every calculation is based on well-established power electronics principles, clearly linking specifications to resulting component values.",
+                feat2_title: "Multiple Topologies",
+                feat2_desc: "Support for Buck, Boost, DAB, and Cuk converters, with plans to expand to new DC-DC and AC-DC topologies.",
+                feat3_title: "Surrogate Loss Models",
+                feat3_desc: "Machine-learning-based models that predict converter power losses without the need for exhaustive simulations.",
+                feat4_title: "Multi-objective Optimization",
+                feat4_desc: "Automatically balances energy efficiency against physical volume to find the optimal design for your constraints.",
+                feat5_title: "Ripple and Limit Calculation",
+                feat5_desc: "Automatically determines current and voltage ripple magnitudes, along with the converter's safe operating limits.",
+                feat6_title: "Didactic Focus",
+                feat6_desc: "Designed for academic teaching and pre-hardware development validation, ideal for students and engineers in training.",
+                galeria_title: "Gallery",
+                galeria_subtitle: "Views of CoreVolt's interface and design workflow.",
+                galeria_img1: "Main design interface.",
+                galeria_img2: "Component calculation results.",
+                galeria_img3: "Efficiency vs. volume curves.",
+                video_title: "Demo Video",
+                video_subtitle: "See CoreVolt in action.",
+                donar_title: "Support this Project",
+                donar_desc: "CoreVolt is an independent development. If you find it useful and want to help it keep growing (new topologies, more features, and better documentation), consider making a donation.",
+                btn_donar: "💛 Donate Now",
+                btn_descargar2: "Download CoreVolt",
+                footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Independent Developer and Educator."
+            }
+        };
+
+        function aplicarTraducciones() {
+            document.getElementById('lang-toggle').innerText = currentLang === 'es' ? 'EN' : 'ES';
+            document.documentElement.lang = currentLang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            localStorage.setItem('idiomaSitio', currentLang);
+            aplicarTraducciones();
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                const navLinks = document.getElementById('nav-links');
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Aplica el idioma guardado (o el detectado) al cargar la página
+        aplicarTraducciones();
+    </script>
+</body>
+</html>
