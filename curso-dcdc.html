@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="imagenes/chip.png">
+    <title>Convertidores DC-DC | Dr. Luis Fernando Gaona</title>
+    <meta name="description" content="Curso de análisis, modelado y control de convertidores conmutados DC-DC: estado estable, modelos de pequeña señal y espacio de estados, validación en MATLAB/Simulink y control en lazo cerrado.">
+    <meta property="og:title" content="Convertidores DC-DC | Dr. Luis Fernando Gaona">
+    <meta property="og:description" content="Curso práctico de análisis, modelado y control de convertidores DC-DC con MATLAB/Simulink.">
+    <style>
+        /* ========================
+           Variables y Reseteo (mismas que el sitio principal)
+           ======================== */
+        :root {
+            --primary-color: #1a202c;
+            --secondary-color: #2d3748;
+            --accent-color: #00979c;
+            --accent-hover: #007a7e;
+            --bg-light: #f7fafc;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --white: #ffffff;
+            --donate-color: #e07b39;
+            --donate-hover: #c9652a;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        a { text-decoration: none; color: var(--accent-color); }
+
+        /* Navegación */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-logo { color: var(--white); font-weight: bold; font-size: 1.3rem; }
+        .nav-logo span { color: var(--accent-color); }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { color: var(--white); margin-left: 2rem; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-color); }
+        #lang-toggle { background: var(--accent-color); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 2rem; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; color: var(--white); font-size: 1.6rem; cursor: pointer; background: none; border: none; }
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: -100%;
+                width: 100%;
+                background-color: var(--primary-color);
+                text-align: center;
+                transition: left 0.3s ease;
+                padding-bottom: 1rem;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { left: 0; }
+            .nav-links a { margin: 1rem 0; font-size: 1.1rem; }
+            #lang-toggle { margin: 1rem auto; }
+        }
+        @media (min-width: 769px) {
+            .menu-toggle { display: none; }
+        }
+
+        /* Hero del curso */
+        .hero-curso {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 6rem 5% 5rem;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+        }
+        .breadcrumb { display: inline-block; margin-bottom: 1.5rem; color: #cbd5e0; font-size: 0.95rem; }
+        .breadcrumb a { color: var(--accent-color); font-weight: 600; }
+        .hero-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .hero-curso h1 { font-size: 2.7rem; margin-bottom: 0.8rem; }
+        .hero-curso h2 { font-size: 1.3rem; color: var(--accent-color); font-weight: 400; margin-bottom: 2rem; }
+        .hero-curso p { max-width: 900px; margin: 0 auto 2.5rem auto; color: #cbd5e0; font-size: 1.05rem; }
+
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--white); padding: 0.8rem 2rem; border-radius: 6px; font-weight: bold; transition: background 0.3s, transform 0.2s; margin: 0.4rem; border: none; cursor: pointer; font-size: 1rem; }
+        .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--accent-color); }
+
+        section { padding: 5rem 5%; }
+        .section-light { background-color: var(--white); }
+        .section-dark { background-color: var(--bg-light); }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section-title { font-size: 2.3rem; color: var(--primary-color); }
+        .section-subtitle { color: var(--text-muted); font-size: 1.05rem; margin-top: 0.5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 4px; background-color: var(--accent-color); margin: 15px auto 0 auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.2rem; max-width: 1200px; margin: 0 auto; }
+
+        /* Tarjetas de temario */
+        .feature-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent-color);
+        }
+        .feature-icon { font-size: 2.2rem; margin-bottom: 1.2rem; }
+        .feature-card h3 { color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
+
+        /* Tarjetas de topologías / técnicas de control */
+        .project-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent-color);
+        }
+        .project-icon { font-size: 2.2rem; margin-bottom: 1.2rem; }
+        .project-card h3 { color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .project-card p { color: var(--text-muted); font-size: 0.95rem; flex-grow: 1; }
+
+        .tags { margin-top: 1rem; margin-bottom: 0.5rem; }
+        .tag { display: inline-block; background: #edf2f7; color: var(--primary-color); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 500; margin: 0 5px 5px 0; }
+
+        /* Galería de imágenes (el usuario agregará sus propias imágenes) */
+        .gallery-item {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+            background-color: #edf2f7;
+        }
+        .gallery-caption { padding: 1rem 1.2rem; color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Video */
+        .video-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .video-wrapper video, .video-wrapper iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: block;
+            background-color: #1a202c;
+        }
+
+        /* Sección de contacto/inscripción */
+        .contact-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            text-align: center;
+            border-top: 5px solid var(--accent-color);
+        }
+        .contact-section .section-title { color: var(--white); }
+        .contact-section .section-title::after { background-color: var(--accent-color); }
+        .contact-section p { max-width: 700px; margin: 0 auto 2rem auto; color: #cbd5e0; }
+
+        footer { background-color: var(--primary-color); color: #a0aec0; text-align: center; padding: 3rem 5%; }
+
+        .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">Dr. Luis Gaona <span>| I+D</span></div>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        <div class="nav-links" id="nav-links">
+            <a href="index.html" data-i18n="nav_volver">← Volver a Cursos</a>
+            <a href="#temario" data-i18n="nav_temario">Temario</a>
+            <a href="#topologias" data-i18n="nav_topologias">Topologías y Control</a>
+            <a href="#galeria" data-i18n="nav_galeria">Galería</a>
+            <a href="#contacto" data-i18n="nav_contacto">Contacto</a>
+            <button id="lang-toggle" onclick="toggleLanguage()">EN</button>
+        </div>
+    </nav>
+
+    <header class="hero-curso">
+        <div class="breadcrumb"><a href="index.html" data-i18n="breadcrumb">← Cursos y Programas Presenciales</a></div>
+        <div class="hero-icon">🔋</div>
+        <h1 data-i18n="hero_title">Convertidores DC-DC</h1>
+        <h2 data-i18n="hero_subtitle">Análisis, modelado y control de convertidores conmutados de potencia</h2>
+        <p data-i18n="hero_desc">Este curso proporciona las bases teóricas y prácticas para el análisis, modelado y control de convertidores
+            conmutados de corriente continua (DC-DC). Los estudiantes aprenderán a evaluar el comportamiento de los convertidores en
+            estado estable y a desarrollar modelos matemáticos dinámicos (pequeña señal y espacio de estados). Asimismo, el curso hace
+            un fuerte énfasis en la validación mediante herramientas de simulación como MATLAB/Simulink y en el diseño de estrategias
+            de control en lazo cerrado para garantizar la estabilidad y el rendimiento adecuado ante perturbaciones.</p>
+        <div class="cta-row">
+            <a href="#temario" class="btn" data-i18n="btn_temario">Ver Temario</a>
+            <a href="#topologias" class="btn btn-outline" data-i18n="btn_topologias">Topologías y Control</a>
+            <a href="#contacto" class="btn btn-outline" style="border-color: #fff; color: #fff;" data-i18n="btn_contacto_hero">Solicitar Información</a>
+        </div>
+    </header>
+
+    <!-- ==============================================
+         TEMARIO / ANÁLISIS Y MODELADO
+         ============================================== -->
+    <section id="temario" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="temario_title">Temario del Curso</h2>
+            <p class="section-subtitle" data-i18n="temario_subtitle">De la operación en estado estable al diseño de un lazo de control robusto.</p>
+        </div>
+        <div class="grid">
+            <div class="feature-card">
+                <div class="feature-icon">📈</div>
+                <h3 data-i18n="tema1_title">Análisis en Estado Estable</h3>
+                <p data-i18n="tema1_desc">Evaluación del comportamiento de los convertidores DC-DC en régimen permanente: relaciones de conversión, rizado de corriente y voltaje, y límites de operación.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🧮</div>
+                <h3 data-i18n="tema2_title">Modelado Dinámico</h3>
+                <p data-i18n="tema2_desc">Desarrollo de modelos matemáticos dinámicos del convertidor, incluyendo el modelo de pequeña señal y la representación en espacio de estados.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">💻</div>
+                <h3 data-i18n="tema3_title">Simulación y Validación</h3>
+                <p data-i18n="tema3_desc">Validación de los modelos y del comportamiento del convertidor mediante herramientas de simulación como MATLAB/Simulink.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3 data-i18n="tema4_title">Control en Lazo Cerrado</h3>
+                <p data-i18n="tema4_desc">Diseño de estrategias de control en lazo cerrado para garantizar la estabilidad y el rendimiento adecuado del convertidor ante perturbaciones.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         TOPOLOGÍAS Y TÉCNICAS DE CONTROL
+         ============================================== -->
+    <section id="topologias" class="section-dark">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="topologias_title">Topologías y Técnicas de Control</h2>
+            <p class="section-subtitle" data-i18n="topologias_subtitle">De las técnicas clásicas de control a los enfoques más avanzados.</p>
+        </div>
+        <div class="grid">
+            <div class="project-card">
+                <div class="project-icon">🔌</div>
+                <h3 data-i18n="top1_title">Convertidores Fundamentales</h3>
+                <p data-i18n="top1_desc">Análisis y modelado de las topologías base: Buck, Boost y Buck-Boost, punto de partida para comprender convertidores más complejos.</p>
+                <div class="tags"><span class="tag">Buck</span><span class="tag">Boost</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🎛️</div>
+                <h3 data-i18n="top2_title">Control PID</h3>
+                <p data-i18n="top2_desc">Diseño y sintonización de controladores PID clásicos a partir del modelo de pequeña señal del convertidor.</p>
+                <div class="tags"><span class="tag">Control Clásico</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🤖</div>
+                <h3 data-i18n="top3_title">Control con IA</h3>
+                <p data-i18n="top3_desc">Introducción a estrategias de control basadas en Inteligencia Artificial para mejorar el rendimiento dinámico del convertidor.</p>
+                <div class="tags"><span class="tag">Inteligencia Artificial</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">⚡</div>
+                <h3 data-i18n="top4_title">FCS-MPC</h3>
+                <p data-i18n="top4_desc">Control Predictivo de Modelo por Conjunto Finito de Estados (FCS-MPC), una técnica de control avanzado de alto desempeño dinámico.</p>
+                <div class="tags"><span class="tag">Control Predictivo</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         GALERÍA
+         ============================================== -->
+    <section id="galeria" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="galeria_title">Galería</h2>
+            <p class="section-subtitle" data-i18n="galeria_subtitle">Modelos, simulaciones y resultados obtenidos durante el curso.</p>
+        </div>
+        <div class="grid">
+            <!-- Reemplaza el src de cada imagen por las tuyas dentro de la carpeta "imagenes/" -->
+            <div class="gallery-item">
+                <img src="imagenes/potencia.png" alt="Convertidor DC-DC - diagrama">
+                <div class="gallery-caption" data-i18n="galeria_img1">Topología y diagrama de un convertidor DC-DC.</div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagenes/dcdc-2.png" alt="Convertidor DC-DC - simulación en Simulink">
+                <div class="gallery-caption" data-i18n="galeria_img2">Simulación del convertidor en MATLAB/Simulink.</div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagenes/dcdc-3.png" alt="Convertidor DC-DC - respuesta en lazo cerrado">
+                <div class="gallery-caption" data-i18n="galeria_img3">Respuesta del sistema en lazo cerrado ante perturbaciones.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         CONTACTO / INSCRIPCIÓN
+         ============================================== -->
+    <section id="contacto" class="contact-section">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="contacto_title">¿Interesado en el curso?</h2>
+        </div>
+        <p data-i18n="contacto_desc">Este programa puede impartirse de forma presencial para instituciones, empresas o grupos de estudiantes.
+            Contáctame para conocer el temario detallado, la duración y los costos de implementación.</p>
+        <div class="cta-row">
+            <a href="mailto:luisgaonac4@gmail.com?subject=Curso%20Convertidores%20DC-DC%20-%20Solicitud%20de%20información" class="btn" data-i18n="contacto_btn">Solicitar Información</a>
+        </div>
+    </section>
+
+    <footer>
+        <p data-i18n="footer_text">&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente.</p>
+    </footer>
+
+    <script>
+        let currentLang = localStorage.getItem('idiomaSitio') || 'es';
+
+        const translations = {
+            es: {
+                nav_volver: "← Volver a Cursos",
+                nav_temario: "Temario",
+                nav_topologias: "Topologías y Control",
+                nav_galeria: "Galería",
+                nav_contacto: "Contacto",
+                breadcrumb: "← Cursos y Programas Presenciales",
+                hero_title: "Convertidores DC-DC",
+                hero_subtitle: "Análisis, modelado y control de convertidores conmutados de potencia",
+                hero_desc: "Este curso proporciona las bases teóricas y prácticas para el análisis, modelado y control de convertidores conmutados de corriente continua (DC-DC). Los estudiantes aprenderán a evaluar el comportamiento de los convertidores en estado estable y a desarrollar modelos matemáticos dinámicos (pequeña señal y espacio de estados). Asimismo, el curso hace un fuerte énfasis en la validación mediante herramientas de simulación como MATLAB/Simulink y en el diseño de estrategias de control en lazo cerrado para garantizar la estabilidad y el rendimiento adecuado ante perturbaciones.",
+                btn_temario: "Ver Temario",
+                btn_topologias: "Topologías y Control",
+                btn_contacto_hero: "Solicitar Información",
+                temario_title: "Temario del Curso",
+                temario_subtitle: "De la operación en estado estable al diseño de un lazo de control robusto.",
+                tema1_title: "Análisis en Estado Estable",
+                tema1_desc: "Evaluación del comportamiento de los convertidores DC-DC en régimen permanente: relaciones de conversión, rizado de corriente y voltaje, y límites de operación.",
+                tema2_title: "Modelado Dinámico",
+                tema2_desc: "Desarrollo de modelos matemáticos dinámicos del convertidor, incluyendo el modelo de pequeña señal y la representación en espacio de estados.",
+                tema3_title: "Simulación y Validación",
+                tema3_desc: "Validación de los modelos y del comportamiento del convertidor mediante herramientas de simulación como MATLAB/Simulink.",
+                tema4_title: "Control en Lazo Cerrado",
+                tema4_desc: "Diseño de estrategias de control en lazo cerrado para garantizar la estabilidad y el rendimiento adecuado del convertidor ante perturbaciones.",
+                topologias_title: "Topologías y Técnicas de Control",
+                topologias_subtitle: "De las técnicas clásicas de control a los enfoques más avanzados.",
+                top1_title: "Convertidores Fundamentales",
+                top1_desc: "Análisis y modelado de las topologías base: Buck, Boost y Buck-Boost, punto de partida para comprender convertidores más complejos.",
+                top2_title: "Control PID",
+                top2_desc: "Diseño y sintonización de controladores PID clásicos a partir del modelo de pequeña señal del convertidor.",
+                top3_title: "Control con IA",
+                top3_desc: "Introducción a estrategias de control basadas en Inteligencia Artificial para mejorar el rendimiento dinámico del convertidor.",
+                top4_title: "FCS-MPC",
+                top4_desc: "Control Predictivo de Modelo por Conjunto Finito de Estados (FCS-MPC), una técnica de control avanzado de alto desempeño dinámico.",
+                galeria_title: "Galería",
+                galeria_subtitle: "Modelos, simulaciones y resultados obtenidos durante el curso.",
+                galeria_img1: "Topología y diagrama de un convertidor DC-DC.",
+                galeria_img2: "Simulación del convertidor en MATLAB/Simulink.",
+                galeria_img3: "Respuesta del sistema en lazo cerrado ante perturbaciones.",
+                contacto_title: "¿Interesado en el curso?",
+                contacto_desc: "Este programa puede impartirse de forma presencial para instituciones, empresas o grupos de estudiantes. Contáctame para conocer el temario detallado, la duración y los costos de implementación.",
+                contacto_btn: "Solicitar Información",
+                footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente."
+            },
+            en: {
+                nav_volver: "← Back to Courses",
+                nav_temario: "Syllabus",
+                nav_topologias: "Topologies & Control",
+                nav_galeria: "Gallery",
+                nav_contacto: "Contact",
+                breadcrumb: "← On-site Courses and Programs",
+                hero_title: "DC-DC Converters",
+                hero_subtitle: "Analysis, modeling, and control of switched-mode power converters",
+                hero_desc: "This course provides the theoretical and practical foundations for the analysis, modeling, and control of switched-mode direct current (DC-DC) converters. Students will learn to evaluate the steady-state behavior of converters and develop dynamic mathematical models (small-signal and state-space). Furthermore, the course places a strong emphasis on validation using simulation tools like MATLAB/Simulink and the design of closed-loop control strategies to ensure stability and proper performance in the presence of disturbances.",
+                btn_temario: "View Syllabus",
+                btn_topologias: "Topologies & Control",
+                btn_contacto_hero: "Request Information",
+                temario_title: "Course Syllabus",
+                temario_subtitle: "From steady-state operation to the design of a robust control loop.",
+                tema1_title: "Steady-State Analysis",
+                tema1_desc: "Evaluation of DC-DC converter behavior in steady-state operation: conversion ratios, current and voltage ripple, and operating limits.",
+                tema2_title: "Dynamic Modeling",
+                tema2_desc: "Development of dynamic mathematical models of the converter, including the small-signal model and the state-space representation.",
+                tema3_title: "Simulation and Validation",
+                tema3_desc: "Validation of the models and converter behavior using simulation tools such as MATLAB/Simulink.",
+                tema4_title: "Closed-Loop Control",
+                tema4_desc: "Design of closed-loop control strategies to ensure the converter's stability and proper performance in the presence of disturbances.",
+                topologias_title: "Topologies and Control Techniques",
+                topologias_subtitle: "From classic control techniques to more advanced approaches.",
+                top1_title: "Fundamental Converters",
+                top1_desc: "Analysis and modeling of the base topologies: Buck, Boost, and Buck-Boost, the starting point for understanding more complex converters.",
+                top2_title: "PID Control",
+                top2_desc: "Design and tuning of classic PID controllers based on the converter's small-signal model.",
+                top3_title: "AI-Based Control",
+                top3_desc: "Introduction to Artificial Intelligence-based control strategies to improve the converter's dynamic performance.",
+                top4_title: "FCS-MPC",
+                top4_desc: "Finite Control Set Model Predictive Control (FCS-MPC), an advanced control technique with high dynamic performance.",
+                galeria_title: "Gallery",
+                galeria_subtitle: "Models, simulations, and results obtained during the course.",
+                galeria_img1: "Topology and diagram of a DC-DC converter.",
+                galeria_img2: "Converter simulation in MATLAB/Simulink.",
+                galeria_img3: "Closed-loop system response to disturbances.",
+                contacto_title: "Interested in the course?",
+                contacto_desc: "This program can be delivered on-site for institutions, companies, or groups of students. Contact me to learn about the detailed syllabus, duration, and implementation costs.",
+                contacto_btn: "Request Information",
+                footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Independent Developer and Educator."
+            }
+        };
+
+        function aplicarTraducciones() {
+            document.getElementById('lang-toggle').innerText = currentLang === 'es' ? 'EN' : 'ES';
+            document.documentElement.lang = currentLang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            localStorage.setItem('idiomaSitio', currentLang);
+            aplicarTraducciones();
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                const navLinks = document.getElementById('nav-links');
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Aplica el idioma guardado (o el detectado) al cargar la página
+        aplicarTraducciones();
+    </script>
+</body>
+</html>

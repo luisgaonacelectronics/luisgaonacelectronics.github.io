@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="imagenes/chip.png">
+    <title>Diseño Basado en Modelos (MIL-SIL-PIL-HIL) | Dr. Luis Fernando Gaona</title>
+    <meta name="description" content="Curso práctico de Diseño Basado en Modelos (Model-Based Design) usando MIL, SIL, PIL y HIL, con proyectos de brazo robótico, control de temperatura, dron y velocidad de un carro, y HIL con modelos 3D en Unity.">
+    <meta property="og:title" content="Diseño Basado en Modelos (MIL-SIL-PIL-HIL) | Dr. Luis Fernando Gaona">
+    <meta property="og:description" content="Curso práctico de Diseño Basado en Modelos con MIL, SIL, PIL y HIL, incluyendo proyectos reales y HIL con Unity 3D.">
+    <style>
+        /* ========================
+           Variables y Reseteo (mismas que el sitio principal)
+           ======================== */
+        :root {
+            --primary-color: #1a202c;
+            --secondary-color: #2d3748;
+            --accent-color: #00979c;
+            --accent-hover: #007a7e;
+            --bg-light: #f7fafc;
+            --text-main: #2d3748;
+            --text-muted: #718096;
+            --white: #ffffff;
+            --donate-color: #e07b39;
+            --donate-hover: #c9652a;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+        a { text-decoration: none; color: var(--accent-color); }
+
+        /* Navegación */
+        nav {
+            background-color: var(--primary-color);
+            padding: 1.2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .nav-logo { color: var(--white); font-weight: bold; font-size: 1.3rem; }
+        .nav-logo span { color: var(--accent-color); }
+        .nav-links { display: flex; align-items: center; }
+        .nav-links a { color: var(--white); margin-left: 2rem; font-size: 0.95rem; font-weight: 500; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--accent-color); }
+        #lang-toggle { background: var(--accent-color); color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-left: 2rem; font-weight: bold; }
+
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; color: var(--white); font-size: 1.6rem; cursor: pointer; background: none; border: none; }
+            .nav-links {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: -100%;
+                width: 100%;
+                background-color: var(--primary-color);
+                text-align: center;
+                transition: left 0.3s ease;
+                padding-bottom: 1rem;
+                box-shadow: 0 10px 10px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { left: 0; }
+            .nav-links a { margin: 1rem 0; font-size: 1.1rem; }
+            #lang-toggle { margin: 1rem auto; }
+        }
+        @media (min-width: 769px) {
+            .menu-toggle { display: none; }
+        }
+
+        /* Hero del curso */
+        .hero-curso {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            padding: 6rem 5% 5rem;
+            text-align: center;
+            border-bottom: 5px solid var(--accent-color);
+        }
+        .breadcrumb { display: inline-block; margin-bottom: 1.5rem; color: #cbd5e0; font-size: 0.95rem; }
+        .breadcrumb a { color: var(--accent-color); font-weight: 600; }
+        .hero-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .hero-curso h1 { font-size: 2.7rem; margin-bottom: 0.8rem; }
+        .hero-curso h2 { font-size: 1.3rem; color: var(--accent-color); font-weight: 400; margin-bottom: 2rem; }
+        .hero-curso p { max-width: 900px; margin: 0 auto 2.5rem auto; color: #cbd5e0; font-size: 1.05rem; }
+
+        .btn { display: inline-block; background-color: var(--accent-color); color: var(--white); padding: 0.8rem 2rem; border-radius: 6px; font-weight: bold; transition: background 0.3s, transform 0.2s; margin: 0.4rem; border: none; cursor: pointer; font-size: 1rem; }
+        .btn:hover { background-color: var(--accent-hover); transform: translateY(-2px); }
+        .btn-outline { background-color: transparent; border: 2px solid var(--accent-color); }
+        .btn-donate { background-color: var(--donate-color); }
+        .btn-donate:hover { background-color: var(--donate-hover); }
+
+        section { padding: 5rem 5%; }
+        .section-light { background-color: var(--white); }
+        .section-dark { background-color: var(--bg-light); }
+        .section-header { text-align: center; margin-bottom: 3.5rem; }
+        .section-title { font-size: 2.3rem; color: var(--primary-color); }
+        .section-subtitle { color: var(--text-muted); font-size: 1.05rem; margin-top: 0.5rem; max-width: 700px; margin-left: auto; margin-right: auto; }
+        .section-title::after { content: ''; display: block; width: 80px; height: 4px; background-color: var(--accent-color); margin: 15px auto 0 auto; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2.2rem; max-width: 1200px; margin: 0 auto; }
+
+        /* Tarjetas de características / metodología */
+        .feature-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .feature-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent-color);
+        }
+        .feature-icon { font-size: 2.2rem; margin-bottom: 1.2rem; }
+        .feature-card h3 { color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .feature-card p { color: var(--text-muted); font-size: 0.95rem; }
+        .feature-badge {
+            display: inline-block;
+            background: var(--accent-color);
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            letter-spacing: 0.5px;
+        }
+
+        /* Tarjetas de proyectos */
+        .project-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2.2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+        .project-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-color: var(--accent-color);
+        }
+        .project-icon { font-size: 2.2rem; margin-bottom: 1.2rem; }
+        .project-card h3 { color: var(--primary-color); font-size: 1.15rem; margin-bottom: 0.8rem; }
+        .project-card p { color: var(--text-muted); font-size: 0.95rem; flex-grow: 1; }
+
+        .tags { margin-top: 1rem; margin-bottom: 0.5rem; }
+        .tag { display: inline-block; background: #edf2f7; color: var(--primary-color); padding: 4px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: 500; margin: 0 5px 5px 0; }
+
+        /* Galería de imágenes (el usuario agregará sus propias imágenes) */
+        .gallery-item {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            display: block;
+            background-color: #edf2f7;
+        }
+        .gallery-caption { padding: 1rem 1.2rem; color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Video */
+        .video-wrapper {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+        .video-wrapper video, .video-wrapper iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: block;
+            background-color: #1a202c;
+        }
+
+        /* Sección de contacto/inscripción */
+        .contact-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: var(--white);
+            text-align: center;
+            border-top: 5px solid var(--accent-color);
+        }
+        .contact-section .section-title { color: var(--white); }
+        .contact-section .section-title::after { background-color: var(--accent-color); }
+        .contact-section p { max-width: 700px; margin: 0 auto 2rem auto; color: #cbd5e0; }
+
+        footer { background-color: var(--primary-color); color: #a0aec0; text-align: center; padding: 3rem 5%; }
+
+        .cta-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.5rem; }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="nav-logo">Dr. Luis Gaona <span>| I+D</span></div>
+        <button class="menu-toggle" onclick="toggleMobileMenu()">☰</button>
+        <div class="nav-links" id="nav-links">
+            <a href="index.html" data-i18n="nav_volver">← Volver a Cursos</a>
+            <a href="#metodologia" data-i18n="nav_metodologia">Metodología</a>
+            <a href="#proyectos" data-i18n="nav_proyectos">Proyectos</a>
+            <a href="#hil" data-i18n="nav_hil">HIL con Unity</a>
+            <a href="#video" data-i18n="nav_video">Video</a>
+            <a href="#contacto" data-i18n="nav_contacto">Contacto</a>
+            <button id="lang-toggle" onclick="toggleLanguage()">EN</button>
+        </div>
+    </nav>
+
+    <header class="hero-curso">
+        <div class="breadcrumb"><a href="index.html" data-i18n="breadcrumb">← Cursos y Programas Presenciales</a></div>
+        <div class="hero-icon">🧩</div>
+        <h1 data-i18n="hero_title">Diseño Basado en Modelos</h1>
+        <h2 data-i18n="hero_subtitle">MIL · SIL · PIL · HIL — De la simulación al hardware real</h2>
+        <p data-i18n="hero_desc">Programa práctico de Diseño Basado en Modelos (Model-Based Design) en el que el estudiante recorre las
+            cuatro etapas de verificación y validación de un sistema de control: Model-in-the-Loop (MIL), Software-in-the-Loop (SIL),
+            Processor-in-the-Loop (PIL) y Hardware-in-the-Loop (HIL). A lo largo del curso se desarrollan proyectos reales de control
+            aplicados a un brazo robótico, un sistema de temperatura, un dron/quadcopter y la velocidad de un carro, culminando con
+            pruebas HIL usando modelos 3D interactivos desarrollados en Unity.</p>
+        <div class="cta-row">
+            <a href="#metodologia" class="btn" data-i18n="btn_metodologia">Ver Metodología</a>
+            <a href="#proyectos" class="btn btn-outline" data-i18n="btn_proyectos">Ver Proyectos</a>
+            <a href="#contacto" class="btn btn-outline" style="border-color: #fff; color: #fff;" data-i18n="btn_contacto_hero">Solicitar Información</a>
+        </div>
+    </header>
+
+    <!-- ==============================================
+         METODOLOGÍA: MIL - SIL - PIL - HIL
+         ============================================== -->
+    <section id="metodologia" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="metodologia_title">Metodología del Curso</h2>
+            <p class="section-subtitle" data-i18n="metodologia_subtitle">Las cuatro etapas del Diseño Basado en Modelos que se cubren a lo largo del programa.</p>
+        </div>
+        <div class="grid">
+            <div class="feature-card">
+                <div class="feature-badge">MIL</div>
+                <div class="feature-icon">🧮</div>
+                <h3 data-i18n="mil_title">Model-in-the-Loop</h3>
+                <p data-i18n="mil_desc">Se modela matemáticamente la planta y el controlador dentro de un entorno de simulación (MATLAB/Simulink), verificando el comportamiento del sistema antes de generar cualquier línea de código.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-badge">SIL</div>
+                <div class="feature-icon">💻</div>
+                <h3 data-i18n="sil_title">Software-in-the-Loop</h3>
+                <p data-i18n="sil_desc">El controlador se convierte en código (C/C++) y se ejecuta en la PC junto con el modelo de la planta, comprobando que la implementación de software se comporta igual que el modelo matemático.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-badge">PIL</div>
+                <div class="feature-icon">🔧</div>
+                <h3 data-i18n="pil_title">Processor-in-the-Loop</h3>
+                <p data-i18n="pil_desc">El código del controlador se ejecuta en el microcontrolador o DSP objetivo, mientras la planta sigue simulada, validando tiempos de ejecución, precisión numérica y restricciones del hardware real.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-badge">HIL</div>
+                <div class="feature-icon">🎮</div>
+                <h3 data-i18n="hil_title">Hardware-in-the-Loop</h3>
+                <p data-i18n="hil_desc">El controlador embebido real se conecta a una planta virtual en tiempo real. En este curso, la planta se visualiza con modelos 3D interactivos desarrollados en Unity, permitiendo observar la respuesta física del sistema de forma inmersiva.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         PROYECTOS DEL CURSO
+         ============================================== -->
+    <section id="proyectos" class="section-dark">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="proyectos_title">Proyectos del Curso</h2>
+            <p class="section-subtitle" data-i18n="proyectos_subtitle">Cuatro sistemas de control reales, desarrollados de principio a fin con la metodología MIL-SIL-PIL-HIL.</p>
+        </div>
+        <div class="grid">
+            <div class="project-card">
+                <div class="project-icon">🦾</div>
+                <h3 data-i18n="proy_brazo_title">Control de un Brazo Robótico</h3>
+                <p data-i18n="proy_brazo_desc">Modelado dinámico y control de posición/trayectoria de un brazo robótico, desde la simulación en MIL hasta su validación HIL con un gemelo digital en Unity.</p>
+                <div class="tags"><span class="tag">Robótica</span><span class="tag">Control de posición</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🌡️</div>
+                <h3 data-i18n="proy_temp_title">Control de Temperatura</h3>
+                <p data-i18n="proy_temp_desc">Diseño de un lazo de control térmico, sintonización de controladores clásicos y avanzados, y verificación completa a través de las cuatro etapas del flujo MBD.</p>
+                <div class="tags"><span class="tag">Sistemas Térmicos</span><span class="tag">PID</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🚁</div>
+                <h3 data-i18n="proy_dron_title">Drone / Quadcopter</h3>
+                <p data-i18n="proy_dron_desc">Control de altitud y estabilización de un cuadricóptero, con modelado de la dinámica de vuelo y validación final mediante HIL sobre un modelo 3D del dron en Unity.</p>
+                <div class="tags"><span class="tag">Estabilización</span><span class="tag">Control de Altitud</span></div>
+            </div>
+            <div class="project-card">
+                <div class="project-icon">🚗</div>
+                <h3 data-i18n="proy_carro_title">Control de Velocidad de un Carro</h3>
+                <p data-i18n="proy_carro_desc">Modelado longitudinal del vehículo y diseño de un controlador de velocidad (cruise control), probado en tiempo real contra un modelo 3D del vehículo en Unity.</p>
+                <div class="tags"><span class="tag">Automotriz</span><span class="tag">Cruise Control</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         HIL CON MODELOS 3D DE UNITY
+         ============================================== -->
+    <section id="hil" class="section-light">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="hil_section_title">HIL con Modelos 3D en Unity</h2>
+            <p class="section-subtitle" data-i18n="hil_section_subtitle">La etapa final del curso: el hardware de control real interactuando con plantas virtuales inmersivas.</p>
+        </div>
+        <div class="grid">
+            <div class="gallery-item">
+                <img src="imagenes/mbd-hil-1.png" alt="HIL - brazo robótico en Unity">
+                <div class="gallery-caption" data-i18n="hil_img1">Gemelo digital del brazo robótico en Unity, controlado en tiempo real por el hardware embebido.</div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagenes/mbd-hil-2.png" alt="HIL - dron en Unity">
+                <div class="gallery-caption" data-i18n="hil_img2">Simulación 3D del dron/quadcopter respondiendo a los comandos del controlador real.</div>
+            </div>
+            <div class="gallery-item">
+                <img src="imagenes/mbd-hil-3.png" alt="HIL - carro en Unity">
+                <div class="gallery-caption" data-i18n="hil_img3">Modelo 3D del vehículo probando el controlador de velocidad en un entorno HIL.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==============================================
+         VIDEO
+         ============================================== -->
+    <section id="video" class="section-dark">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="video_title">Video Demostrativo</h2>
+            <p class="section-subtitle" data-i18n="video_subtitle">Un vistazo al flujo MIL-SIL-PIL-HIL en acción, con los modelos 3D de Unity.</p>
+        </div>
+        <div class="video-wrapper">
+            <!-- Opción A: video propio subido a la carpeta "videos/" -->
+            <video controls poster="imagenes/mbd-poster.png">
+                <source src="videos/mbd-demo.mp4" type="video/mp4">
+                Tu navegador no soporta la reproducción de video.
+            </video>
+            <!-- Opción B: si prefieres usar YouTube/Vimeo, borra la etiqueta <video> de arriba
+                 y descomenta el iframe de abajo, reemplazando VIDEO_ID por el tuyo:
+            <iframe src="https://www.youtube.com/embed/VIDEO_ID" title="Curso MBD Demo" frameborder="0" allowfullscreen></iframe>
+            -->
+        </div>
+    </section>
+
+    <!-- ==============================================
+         CONTACTO / INSCRIPCIÓN
+         ============================================== -->
+    <section id="contacto" class="contact-section">
+        <div class="section-header">
+            <h2 class="section-title" data-i18n="contacto_title">¿Interesado en el curso?</h2>
+        </div>
+        <p data-i18n="contacto_desc">Este programa puede impartirse de forma presencial para instituciones, empresas o grupos de estudiantes.
+            Contáctame para conocer el temario detallado, la duración y los costos de implementación.</p>
+        <div class="cta-row">
+            <a href="mailto:luisgaonac4@gmail.com?subject=Curso%20MBD%20(MIL-SIL-PIL-HIL)%20-%20Solicitud%20de%20información" class="btn" data-i18n="contacto_btn">Solicitar Información</a>
+        </div>
+    </section>
+
+    <footer>
+        <p data-i18n="footer_text">&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente.</p>
+    </footer>
+
+    <script>
+        let currentLang = localStorage.getItem('idiomaSitio') || 'es';
+
+        const translations = {
+            es: {
+                nav_volver: "← Volver a Cursos",
+                nav_metodologia: "Metodología",
+                nav_proyectos: "Proyectos",
+                nav_hil: "HIL con Unity",
+                nav_video: "Video",
+                nav_contacto: "Contacto",
+                breadcrumb: "← Cursos y Programas Presenciales",
+                hero_title: "Diseño Basado en Modelos",
+                hero_subtitle: "MIL · SIL · PIL · HIL — De la simulación al hardware real",
+                hero_desc: "Programa práctico de Diseño Basado en Modelos (Model-Based Design) en el que el estudiante recorre las cuatro etapas de verificación y validación de un sistema de control: Model-in-the-Loop (MIL), Software-in-the-Loop (SIL), Processor-in-the-Loop (PIL) y Hardware-in-the-Loop (HIL). A lo largo del curso se desarrollan proyectos reales de control aplicados a un brazo robótico, un sistema de temperatura, un dron/quadcopter y la velocidad de un carro, culminando con pruebas HIL usando modelos 3D interactivos desarrollados en Unity.",
+                btn_metodologia: "Ver Metodología",
+                btn_proyectos: "Ver Proyectos",
+                btn_contacto_hero: "Solicitar Información",
+                metodologia_title: "Metodología del Curso",
+                metodologia_subtitle: "Las cuatro etapas del Diseño Basado en Modelos que se cubren a lo largo del programa.",
+                mil_title: "Model-in-the-Loop",
+                mil_desc: "Se modela matemáticamente la planta y el controlador dentro de un entorno de simulación (MATLAB/Simulink), verificando el comportamiento del sistema antes de generar cualquier línea de código.",
+                sil_title: "Software-in-the-Loop",
+                sil_desc: "El controlador se convierte en código (C/C++) y se ejecuta en la PC junto con el modelo de la planta, comprobando que la implementación de software se comporta igual que el modelo matemático.",
+                pil_title: "Processor-in-the-Loop",
+                pil_desc: "El código del controlador se ejecuta en el microcontrolador o DSP objetivo, mientras la planta sigue simulada, validando tiempos de ejecución, precisión numérica y restricciones del hardware real.",
+                hil_title: "Hardware-in-the-Loop",
+                hil_desc: "El controlador embebido real se conecta a una planta virtual en tiempo real. En este curso, la planta se visualiza con modelos 3D interactivos desarrollados en Unity, permitiendo observar la respuesta física del sistema de forma inmersiva.",
+                proyectos_title: "Proyectos del Curso",
+                proyectos_subtitle: "Cuatro sistemas de control reales, desarrollados de principio a fin con la metodología MIL-SIL-PIL-HIL.",
+                proy_brazo_title: "Control de un Brazo Robótico",
+                proy_brazo_desc: "Modelado dinámico y control de posición/trayectoria de un brazo robótico, desde la simulación en MIL hasta su validación HIL con un gemelo digital en Unity.",
+                proy_temp_title: "Control de Temperatura",
+                proy_temp_desc: "Diseño de un lazo de control térmico, sintonización de controladores clásicos y avanzados, y verificación completa a través de las cuatro etapas del flujo MBD.",
+                proy_dron_title: "Drone / Quadcopter",
+                proy_dron_desc: "Control de altitud y estabilización de un cuadricóptero, con modelado de la dinámica de vuelo y validación final mediante HIL sobre un modelo 3D del dron en Unity.",
+                proy_carro_title: "Control de Velocidad de un Carro",
+                proy_carro_desc: "Modelado longitudinal del vehículo y diseño de un controlador de velocidad (cruise control), probado en tiempo real contra un modelo 3D del vehículo en Unity.",
+                hil_section_title: "HIL con Modelos 3D en Unity",
+                hil_section_subtitle: "La etapa final del curso: el hardware de control real interactuando con plantas virtuales inmersivas.",
+                hil_img1: "Gemelo digital del brazo robótico en Unity, controlado en tiempo real por el hardware embebido.",
+                hil_img2: "Simulación 3D del dron/quadcopter respondiendo a los comandos del controlador real.",
+                hil_img3: "Modelo 3D del vehículo probando el controlador de velocidad en un entorno HIL.",
+                video_title: "Video Demostrativo",
+                video_subtitle: "Un vistazo al flujo MIL-SIL-PIL-HIL en acción, con los modelos 3D de Unity.",
+                contacto_title: "¿Interesado en el curso?",
+                contacto_desc: "Este programa puede impartirse de forma presencial para instituciones, empresas o grupos de estudiantes. Contáctame para conocer el temario detallado, la duración y los costos de implementación.",
+                contacto_btn: "Solicitar Información",
+                footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Desarrollador y Educador Independiente."
+            },
+            en: {
+                nav_volver: "← Back to Courses",
+                nav_metodologia: "Methodology",
+                nav_proyectos: "Projects",
+                nav_hil: "HIL with Unity",
+                nav_video: "Video",
+                nav_contacto: "Contact",
+                breadcrumb: "← On-site Courses and Programs",
+                hero_title: "Model-Based Design",
+                hero_subtitle: "MIL · SIL · PIL · HIL — From simulation to real hardware",
+                hero_desc: "A hands-on Model-Based Design program in which students go through the four verification and validation stages of a control system: Model-in-the-Loop (MIL), Software-in-the-Loop (SIL), Processor-in-the-Loop (PIL), and Hardware-in-the-Loop (HIL). Throughout the course, real control projects are developed for a robotic arm, a temperature system, a drone/quadcopter, and a car's speed, culminating in HIL testing using interactive 3D models built in Unity.",
+                btn_metodologia: "View Methodology",
+                btn_proyectos: "View Projects",
+                btn_contacto_hero: "Request Information",
+                metodologia_title: "Course Methodology",
+                metodologia_subtitle: "The four stages of Model-Based Design covered throughout the program.",
+                mil_title: "Model-in-the-Loop",
+                mil_desc: "The plant and controller are mathematically modeled within a simulation environment (MATLAB/Simulink), verifying system behavior before writing a single line of code.",
+                sil_title: "Software-in-the-Loop",
+                sil_desc: "The controller is converted into code (C/C++) and runs on the PC together with the plant model, confirming that the software implementation behaves the same as the mathematical model.",
+                pil_title: "Processor-in-the-Loop",
+                pil_desc: "The controller code runs on the target microcontroller or DSP while the plant remains simulated, validating execution timing, numerical precision, and real hardware constraints.",
+                hil_title: "Hardware-in-the-Loop",
+                hil_desc: "The real embedded controller is connected to a real-time virtual plant. In this course, the plant is visualized with interactive 3D models built in Unity, allowing students to observe the system's physical response in an immersive way.",
+                proyectos_title: "Course Projects",
+                proyectos_subtitle: "Four real control systems, developed end-to-end with the MIL-SIL-PIL-HIL methodology.",
+                proy_brazo_title: "Robotic Arm Control",
+                proy_brazo_desc: "Dynamic modeling and position/trajectory control of a robotic arm, from MIL simulation to HIL validation with a digital twin in Unity.",
+                proy_temp_title: "Temperature Control",
+                proy_temp_desc: "Design of a thermal control loop, tuning of classic and advanced controllers, and full verification through the four stages of the MBD flow.",
+                proy_dron_title: "Drone / Quadcopter",
+                proy_dron_desc: "Altitude control and stabilization of a quadcopter, with flight dynamics modeling and final validation through HIL on a 3D drone model in Unity.",
+                proy_carro_title: "Car Speed Control",
+                proy_carro_desc: "Longitudinal vehicle modeling and design of a speed controller (cruise control), tested in real time against a 3D vehicle model in Unity.",
+                hil_section_title: "HIL with 3D Models in Unity",
+                hil_section_subtitle: "The final stage of the course: real control hardware interacting with immersive virtual plants.",
+                hil_img1: "Digital twin of the robotic arm in Unity, controlled in real time by the embedded hardware.",
+                hil_img2: "3D simulation of the drone/quadcopter responding to commands from the real controller.",
+                hil_img3: "3D vehicle model testing the speed controller in an HIL environment.",
+                video_title: "Demo Video",
+                video_subtitle: "A look at the MIL-SIL-PIL-HIL flow in action, with the Unity 3D models.",
+                contacto_title: "Interested in the course?",
+                contacto_desc: "This program can be delivered on-site for institutions, companies, or groups of students. Contact me to learn about the detailed syllabus, duration, and implementation costs.",
+                contacto_btn: "Request Information",
+                footer_text: "&copy; 2026 Dr. Luis Fernando Gaona. Independent Developer and Educator."
+            }
+        };
+
+        function aplicarTraducciones() {
+            document.getElementById('lang-toggle').innerText = currentLang === 'es' ? 'EN' : 'ES';
+            document.documentElement.lang = currentLang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) {
+                    el.innerHTML = translations[currentLang][key];
+                }
+            });
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'es' ? 'en' : 'es';
+            localStorage.setItem('idiomaSitio', currentLang);
+            aplicarTraducciones();
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('nav-links').classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-links a').forEach(enlace => {
+            enlace.addEventListener('click', () => {
+                const navLinks = document.getElementById('nav-links');
+                if (navLinks.classList.contains('active')) {
+                    navLinks.classList.remove('active');
+                }
+            });
+        });
+
+        // Aplica el idioma guardado (o el detectado) al cargar la página
+        aplicarTraducciones();
+    </script>
+</body>
+</html>

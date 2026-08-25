@@ -402,12 +402,21 @@
                 <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
             </div>
             
-            <div class="card" onclick="abrirModal('potencia')" style="cursor: pointer;">
+            <a class="card" href="curso-dcdc.html" onclick="localStorage.setItem('idiomaSitio', currentLang)">
                 <div class="card-icon">🔋</div>
                 <h3 data-i18n="clases_potencia_title">Convertidores DC-DC</h3>
                 <p data-i18n="clases_potencia_desc">Programa de electrónica de potencia donde el estudiante aprenderá a cómo analizar convertidores electrónicos CD-CD, obtendrá los modelos matemáticos y controlará el convertidor con técnicas de control clásicas como PID y avanzadas como IA y FCS-MPC.</p>
+                <div class="tags"><span class="tag">MATLAB/Simulink</span><span class="tag">Control</span></div>
                 <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
-            </div>
+            </a>
+
+            <a class="card" href="curso-mbd.html" onclick="localStorage.setItem('idiomaSitio', currentLang)">
+                <div class="card-icon">🧩</div>
+                <h3 data-i18n="clases_mbd_title">Diseño Basado en Modelos (MIL-SIL-PIL-HIL)</h3>
+                <p data-i18n="clases_mbd_desc">Curso práctico de Diseño Basado en Modelos usando MIL, SIL, PIL y HIL, con proyectos reales: control de un brazo robótico, control de temperatura, control de un dron/quadcopter y control de velocidad de un carro. El HIL se realiza con modelos 3D en Unity.</p>
+                <div class="tags"><span class="tag">MATLAB/Simulink</span><span class="tag">Unity 3D</span></div>
+                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
+            </a>
 
             <div class="card" style="border-top: 4px solid #a435f0; cursor: default;">
                 <div><span class="udemy-badge" data-i18n="udemy_badge">Nuevo Curso en Udemy</span></div>
@@ -1181,6 +1190,8 @@ const translations = {
         clases_calculo_desc: "Programa inmersivo de cálculo donde los alumnos aprenden las aplicaciones del cálculo diferencial en casos reales y prácticos, como videojuegos, analítica de datos, redes sociales e Inteligencia Artificial.",
         clases_potencia_title: "Convertidores DC-DC",
         clases_potencia_desc: "Programa de electrónica de potencia donde el estudiante aprenderá a cómo analizar convertidores electrónicos CD-CD, obtendrá los modelos matemáticos y controlará el convertidor con técnicas de control clásicas como PID y avanzadas como IA y FCS-MPC.",
+        clases_mbd_title: "Diseño Basado en Modelos (MIL-SIL-PIL-HIL)",
+        clases_mbd_desc: "Curso práctico de Diseño Basado en Modelos usando MIL, SIL, PIL y HIL, con proyectos reales: control de un brazo robótico, control de temperatura, control de un dron/quadcopter y control de velocidad de un carro. El HIL se realiza con modelos 3D en Unity.",
         contacto_title: "¿Listo para integrar nueva tecnología?",
         contacto_desc: "Si quieres saber más acerca de los cursos, como temario detallado y costos de implementación para tu escuela o empresa, contáctame para agendar una reunión técnica.",
         contacto_btn: "Contactar por Correo",
@@ -1290,6 +1301,8 @@ const translations = {
         clases_calculo_desc: "Immersive calculus program where students learn the applications of differential calculus in real and practical cases, such as video games, data analytics, social networks, and Artificial Intelligence.",
         clases_potencia_title: "DC-DC Converters",
         clases_potencia_desc: "Power electronics program where the student will learn how to analyze DC-DC electronic converters, obtain mathematical models, and control the converter with classic control techniques such as PID and advanced ones like AI and FCS-MPC.",
+        clases_mbd_title: "Model-Based Design (MIL-SIL-PIL-HIL)",
+        clases_mbd_desc: "Hands-on Model-Based Design course using MIL, SIL, PIL, and HIL, featuring real projects: robotic arm control, temperature control, drone/quadcopter control, and car speed control. HIL is performed using 3D models built in Unity.",
         contacto_title: "Ready to integrate new technology?",
         contacto_desc: "If you want to know more about the courses, such as detailed syllabus and implementation costs for your school or company, contact me to schedule a technical meeting.",
         contacto_btn: "Contact via Email",
