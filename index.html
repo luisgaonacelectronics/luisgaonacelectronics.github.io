@@ -395,12 +395,6 @@
                 <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
             </div>
 
-            <div class="card" onclick="abrirModal('diferencial')" style="cursor: pointer;">
-                <div class="card-icon">📐</div>
-                <h3 data-i18n="clases_calculo_title">Cálculo Diferencial</h3>
-                <p data-i18n="clases_calculo_desc">Programa inmersivo de cálculo donde los alumnos aprenden las aplicaciones del cálculo diferencial en casos reales y prácticos, como videojuegos, analítica de datos, redes sociales e Inteligencia Artificial.</p>
-                <div class="clic-hint" data-i18n="hint_detalles">> Ver detalles técnicos</div>
-            </div>
             
             <a class="card" href="curso-dcdc.html" onclick="localStorage.setItem('idiomaSitio', currentLang)">
                 <div class="card-icon">🔋</div>
@@ -868,39 +862,7 @@ const datosProyectos = {
                 `
             }
         },
-            'diferencial': {
-            es: {
-                titulo: 'Cálculo Diferencial',
-                contenido: `
-                    <img src="imagenes/diferencial.png" class="modal-img">
-                    
-                    <h4>Descripción</h4>
-                    <p>Este curso contiene los temas básicos e importantes para introducir al estudiante en el estudio del
-                        cálculo; se estudian los conceptos de: números reales, variables, funciones y límites, con los que se
-                        podría establecer uno de los más esenciales, la derivada, concepto que permite analizar la razón
-                        de cambio entre variables. Esta noción es de trascendental importancia en las aplicaciones de la
-                        vida. El Cálculo Diferencial contribuye a que el estudiante adquiera conocimientos necesarios para
-                        asimilar las asignaturas de Cálculo Integral, Cálculo Vectorial, Ecuaciones Diferenciales, Métodos
-                        Numéricos, asignaturas de Física y Ciencias de la Ingeniería. Además, contiene los principios y bases
-                        para el modelado matemático.</p>
-                `
-            },
-            en: {
-                titulo: 'Differential Calculus',
-                contenido: `
-                    <img src="imagenes/diferencial.png" class="modal-img">
-                    
-                    <h4>Description</h4>
-                    <p>This course contains the basic and important topics to introduce the student to the study of 
-                        calculus; it covers the concepts of real numbers, variables, functions, and limits, which help 
-                        establish one of the most essential concepts: the derivative. This concept allows analyzing the rate 
-                        of change between variables and is of transcendental importance in real-life applications. 
-                        Differential Calculus helps students acquire the necessary knowledge to assimilate subjects such as 
-                        Integral Calculus, Vector Calculus, Differential Equations, Numerical Methods, Physics, and 
-                        Engineering Sciences. In addition, it contains the principles and foundations for mathematical modeling.</p>
-                `
-            }
-        },
+            
             'potencia': {
             es: {
                 titulo: 'Convertidores CD-CD',
